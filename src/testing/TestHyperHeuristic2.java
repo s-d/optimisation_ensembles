@@ -4,7 +4,6 @@ import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class TestHyperHeuristic2 extends HyperHeuristic {
 
@@ -41,17 +40,17 @@ public class TestHyperHeuristic2 extends HyperHeuristic {
         this.numberOfRules = problem.getNumberOfHeuristics();
         this.generatePermutations();
 
-        int[] heuristicToApply = solutions.get(0);
+        int[] heuristicToApply = solutions.get(4);
 
         problem.initialiseSolution(0);
 
         Fitness startingFitness = new Fitness(problem.getBestSolutionValue());
         Fitness bestFitness = new Fitness(0);
 
-        while (!hasTimeExpired()) {
+        double currentSolutionFitness = Double.POSITIVE_INFINITY;
+        double newSolutionFitness = Double.POSITIVE_INFINITY;
 
-            double currentSolutionFitness = Double.POSITIVE_INFINITY;
-            double newSolutionFitness = Double.POSITIVE_INFINITY;
+        while (!hasTimeExpired()) {
 
             for (int i = 0; i < heuristicToApply.length; i++) {
                 newSolutionFitness = problem.applyHeuristic(heuristicToApply[i], 0, 1);
@@ -61,6 +60,8 @@ public class TestHyperHeuristic2 extends HyperHeuristic {
             double delta = currentSolutionFitness - newSolutionFitness;
 
             if (delta > 0) {
+
+                System.out.println(newSolutionFitness);
                 problem.copySolution(1, 0);
                 currentSolutionFitness = newSolutionFitness;
                 bestFitness.setFitness(newSolutionFitness);
@@ -81,19 +82,10 @@ public class TestHyperHeuristic2 extends HyperHeuristic {
         System.out.print("%\n\n");
 
 
-
     }
 
     public String toString() {
         return "Test Hyper Heuristic Two";
-    }
-
-    public ProblemDomain getProblem() {
-        return problem;
-    }
-
-    public int getNumberOfRules() {
-        return numberOfRules;
     }
 
 }
