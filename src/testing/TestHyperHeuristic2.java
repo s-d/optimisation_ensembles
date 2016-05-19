@@ -46,41 +46,47 @@ public class TestHyperHeuristic2 extends HyperHeuristic {
         problem.initialiseSolution(0);
 
         Fitness startingFitness = new Fitness(problem.getBestSolutionValue());
+        Fitness bestFitness = new Fitness(0);
 
-        double currentSolutionFitness = Double.POSITIVE_INFINITY;
-
-        System.out.println("Starting fitness is " + problem.getBestSolutionValue());
         while (!hasTimeExpired()) {
 
+            double currentSolutionFitness = Double.POSITIVE_INFINITY;
             double newSolutionFitness = Double.POSITIVE_INFINITY;
 
             for (int i = 0; i < heuristicToApply.length; i++) {
                 newSolutionFitness = problem.applyHeuristic(heuristicToApply[i], 0, 1);
                 problem.copySolution(1, 0);
-
             }
 
             double delta = currentSolutionFitness - newSolutionFitness;
-            System.out.println(newSolutionFitness);
-
 
             if (delta > 0) {
                 problem.copySolution(1, 0);
                 currentSolutionFitness = newSolutionFitness;
+                bestFitness.setFitness(newSolutionFitness);
             }
         }
-        System.out.println(toString() + " time expired");
 
-        if(problem.getBestSolutionValue() < startingFitness.getFitness()){
-            System.out.println("no improvement found");
-        }
+        System.out.println("\n" + this.toString() + " time has expired.");
+
+        System.out.println("\nInitial fitness was: " + startingFitness.getFitness());
+
+        System.out.println("\nBest fitness " + bestFitness.getFitness());
+
+        double decrease = startingFitness.getFitness() - bestFitness.getFitness();
+        double improvement = (decrease / bestFitness.getFitness()) * 100;
+
+        System.out.print("\nImprovement of ");
+        System.out.print(String.format("%.2f", improvement));
+        System.out.print("%\n\n");
+
+
+
     }
-
 
     public String toString() {
         return "Test Hyper Heuristic Two";
     }
-
 
     public ProblemDomain getProblem() {
         return problem;
