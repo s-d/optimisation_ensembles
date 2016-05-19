@@ -1,50 +1,57 @@
-.metadata
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.settings/
-.loadpath
-.recommenders
+*.class
 
-# Eclipse Core
-.project
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
 
-# External tool builders
-.externalToolBuilders/
+# Package Files #
+*.jar
+*.war
+*.ear
 
-# Locally stored "Eclipse launch configurations"
-*.launch
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
 
-# PyDev specific (Python IDE for Eclipse)
-*.pydevproject
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
-# CDT-specific (C/C++ Development Tooling)
-.cproject
+# User-specific stuff:
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/vcs.xml
+.idea/jsLibraryMappings.xml
 
-# JDT-specific (Eclipse Java Development Tools)
-.classpath
+# Sensitive or high-churn files:
+.idea/dataSources.ids
+.idea/dataSources.xml
+.idea/dataSources.local.xml
+.idea/sqlDataSources.xml
+.idea/dynamic.xml
+.idea/uiDesigner.xml
 
-# Java annotation processor (APT)
-.factorypath
+# Gradle:
+.idea/gradle.xml
+.idea/libraries
 
-# PDT-specific (PHP Development Tools)
-.buildpath
+# Mongo Explorer plugin:
+.idea/mongoSettings.xml
 
-# sbteclipse plugin
-.target
+## File-based project format:
+*.iws
 
-# Tern plugin
-.tern-project
+## Plugin-specific files:
 
-# TeXlipse plugin
-.texlipse
+# IntelliJ
+/out/
 
-# STS (Spring Tool Suite)
-.springBeans
+# mpeltonen/sbt-idea plugin
+.idea_modules/
 
-# Code Recommenders
-.recommenders/
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
