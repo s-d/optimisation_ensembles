@@ -3,10 +3,10 @@ package testing;
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 
-public class TestHyperHeurstic1 extends HyperHeuristic {
+public class TestHyperHeuristic1 extends HyperHeuristic {
 
 	// constructor
-	public TestHyperHeurstic1(long seed) {
+	public TestHyperHeuristic1(long seed) {
 		super(seed);
 	}
 
@@ -16,7 +16,7 @@ public class TestHyperHeurstic1 extends HyperHeuristic {
 		System.out.println(toString());
 
 		// get the number of rules that are available to solve this problem
-		int numberOfHeurstics = problem.getNumberOfHeuristics();
+		int numberOfHeuristics = problem.getNumberOfHeuristics();
 
 		// Initialise the starting fitness
 		double currentSolutionFitness = Double.POSITIVE_INFINITY;
@@ -38,7 +38,7 @@ public class TestHyperHeurstic1 extends HyperHeuristic {
 
 			System.out.println(heuristicToApply);
 			
-			if (heuristicToApply < numberOfHeurstics -1) {
+			if (heuristicToApply < numberOfHeuristics -1) {
 				heuristicToApply++;
 			} else {
 				heuristicToApply = 0;
