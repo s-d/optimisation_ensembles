@@ -4,6 +4,7 @@ import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TestHyperHeuristic2 extends HyperHeuristic {
 

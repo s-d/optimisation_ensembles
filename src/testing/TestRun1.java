@@ -15,10 +15,11 @@ public class TestRun1 {
         HyperHeuristic hyper_heuristic_object = new TestHyperHeuristic2(1234);
 
         //we must load an instance within the problem domain, in this case we choose instance 2
-        problem.loadInstance(2);
+
+        problem.loadInstance(0);
 
         //we must set the time limit for the hyper-heuristic in milliseconds, in this example we set the time limit to 1 minute
-        hyper_heuristic_object.setTimeLimit(60000);
+        hyper_heuristic_object.setTimeLimit(1);
 
         //a key step is to assign the ProblemDomain object to the HyperHeuristic object.
         //However, this should be done after the instance has been loaded, and after the time limit has been set
