@@ -7,20 +7,21 @@ import java.util.ArrayList;
 
 public class TestHyperHeuristic2 extends HyperHeuristic {
 
-    private ProblemDomain problem;
     private int numberOfRules;
     private ArrayList<int[]> solutions;
 
+    //constructor
     public TestHyperHeuristic2(long seed) {
         super(seed);
         System.out.println(toString());
     }
 
+    //create every sequence of three sub heuristics
     private void generatePermutations() {
         //initialize array to hold solutions
         solutions = new ArrayList<>();
 
-        //generate every possible combination of rules
+        //generate combination of rules
         for (int i = 0; i < numberOfRules; i++) {
             for (int j = 0; j < numberOfRules; j++) {
                 for (int k = 0; k < numberOfRules; k++) {
@@ -35,22 +36,34 @@ public class TestHyperHeuristic2 extends HyperHeuristic {
 
     }
 
+    //called by abstract run method
     protected void solve(ProblemDomain problem) {
-        this.problem = problem;
+        //get number of sub heuristics
         this.numberOfRules = problem.getNumberOfHeuristics();
+        //create sequences from the sub heuristics
         this.generatePermutations();
 
-        int[] heuristicToApply = solutions.get(4);
+        //select a sequence
+        int[] heuristicToApply = solutions.get(1);
 
+        //initialise the problem
         problem.initialiseSolution(0);
 
+        //get the  fitness of the initial solution
         Fitness startingFitness = new Fitness(problem.getBestSolutionValue());
+
+        //declare variable to hold best fitness found by the the sequence
         Fitness bestFitness = new Fitness(0);
 
+        //set current fitness and new fitness to infinity
         double currentSolutionFitness = Double.POSITIVE_INFINITY;
         double newSolutionFitness = Double.POSITIVE_INFINITY;
 
+        //set iteration counter to 0
+        int iterationCounter = 0;
+
         while (!hasTimeExpired()) {
+            iterationCounter++;
 
             for (int i = 0; i < heuristicToApply.length; i++) {
                 newSolutionFitness = problem.applyHeuristic(heuristicToApply[i], 0, 1);
@@ -59,8 +72,9 @@ public class TestHyperHeuristic2 extends HyperHeuristic {
 
             double delta = currentSolutionFitness - newSolutionFitness;
 
-            if (delta > 0) {
 
+            if (delta > 0) {
+                System.out.println("Iteration: "+iterationCounter);
                 System.out.println(newSolutionFitness);
                 problem.copySolution(1, 0);
                 currentSolutionFitness = newSolutionFitness;
@@ -71,6 +85,8 @@ public class TestHyperHeuristic2 extends HyperHeuristic {
         System.out.println("\n" + this.toString() + " time has expired.");
 
         System.out.println("\nInitial fitness was: " + startingFitness.getFitness());
+
+        System.out.println("\nIterations run: "+iterationCounter);
 
         System.out.println("\nBest fitness " + bestFitness.getFitness());
 
