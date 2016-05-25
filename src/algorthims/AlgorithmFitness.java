@@ -15,10 +15,17 @@ public class AlgorithmFitness extends HyperHeuristic {
     private int numberOfHeuristics;
     private ArrayList<int[]> algorithms;
     private String filePath;
+    private long algorithmSeed, problemSeed, timeLimit;
+    private int problemInstance;
 
-    public AlgorithmFitness(long seed, String filePath) {
-        super(seed);
+    public AlgorithmFitness(long algorithmSeed, long problemSeed, int problemInstance, long timeLimit, String filePath) {
+        super(algorithmSeed);
+        this.algorithmSeed = algorithmSeed;
+        this.problemSeed = problemSeed;
+        this.problemInstance = problemInstance;
+        this.timeLimit = timeLimit;
         this.filePath = filePath;
+
     }
 
     private void generateAlgorithms() {
@@ -36,7 +43,6 @@ public class AlgorithmFitness extends HyperHeuristic {
                 }
             }
         }
-
     }
 
     private void writeToFile(String data) throws IOException {
@@ -75,18 +81,18 @@ public class AlgorithmFitness extends HyperHeuristic {
         while (!hasTimeExpired()) {
 
             for (int i = 0; i < currentAlgorithm.length; i++) {
-                System.out.println(totalIterations);
-                System.out.println("Alg: " + algorithmIndex);
-                System.out.println("It: " + iterations);
-                System.out.println("Heuristic: " + i);
-                System.out.println("NoImprovements: " + noImprovementCounter + "\n");
+//                System.out.println(totalIterations);
+//                System.out.println("Alg: " + algorithmIndex);
+//                System.out.println("It: " + iterations);
+//                System.out.println("Heuristic: " + i);
+//                System.out.println("NoImprovements: " + noImprovementCounter + "\n");
 
-                iterations++;
-                totalIterations++;
+
+
 
                 newFitness = problemDomain.applyHeuristic(currentAlgorithm[i], 1, 2);
-                System.out.println("cur: " + currentFitness);
-                System.out.println("new: " + newFitness);
+//                System.out.println("cur: " + currentFitness);
+//                System.out.println("new: " + newFitness);
                 delta = currentFitness - newFitness;
 
                 if (delta > 0) {
@@ -97,14 +103,19 @@ public class AlgorithmFitness extends HyperHeuristic {
                 } else {
                     noImprovementCounter++;
                 }
+
+                iterations++;
+                totalIterations++;
             }
 
             if (noImprovementCounter < 3) {
                 noImprovementCounter = 0;
             } else {
-                algorithmIndex++;
-                if (algorithmIndex <= algorithms.size() - 1) {
-                    sb.append(startingFitness + "," + algorithmIndex + "," + currentFitness + "," + iterations + "\n");
+
+                sb.append(problemInstance + "," + problemSeed + "," + algorithmSeed + "," + startingFitness + "," + algorithmIndex + "," + currentFitness + "," + iterations + "," + Arrays.toString(currentAlgorithm) + "\n");
+
+                if (algorithmIndex < algorithms.size()-1) {
+                    algorithmIndex++;
 
                     currentAlgorithm = algorithms.get(algorithmIndex);
                     iterations = 0;
@@ -112,20 +123,13 @@ public class AlgorithmFitness extends HyperHeuristic {
                     problemDomain.copySolution(0, 1);
                     currentFitness = Double.POSITIVE_INFINITY;
                 } else {
-
-                    try {
-                        this.writeToFile("starting fitness,algorithm number,fitness,number of iterations\n");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
                     try {
                         this.writeToFile(sb.toString());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
-                    System.out.println("we done");
+                    System.out.println("instance " + problemInstance + " complete");
                     return;
                 }
             }
