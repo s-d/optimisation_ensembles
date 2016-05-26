@@ -18,11 +18,11 @@ public class RunAlgorithmFitnessAverage {
         int iterations = 50;
         int problemInstance = 0;
 
-        String filePath = "data/algorithmData" + iterations + ".csv";
+        String filePath = "data/newAlgorithmData" + iterations + ".csv";
 
 
         FileWriter fw = new FileWriter(filePath, true);
-        fw.write("iteration, problem instance, problem seed, algorithm seed, starting fitness,algorithm number, fitness, number of iterations,heuristics,,\n");
+        fw.write("iteration,problem instance,problem seed,algorithm seed,starting fitness,algorithm number,fitness,number of iterations,heuristics, , \n");
         fw.flush();
         fw.close();
 

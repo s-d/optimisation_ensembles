@@ -66,7 +66,6 @@ public class AlgorithmFitnessAverage extends HyperHeuristic {
         double delta;
         double newFitness;
 
-        double currentFitness = Double.POSITIVE_INFINITY;
         this.numberOfHeuristics = problemDomain.getNumberOfHeuristics() - 1;
 
         generateAlgorithms();
@@ -78,12 +77,19 @@ public class AlgorithmFitnessAverage extends HyperHeuristic {
         problemDomain.copySolution(0, 1);
 
         double startingFitness = problemDomain.getBestSolutionValue();
+        double currentFitness = startingFitness;
+        double bestFitness = Double.POSITIVE_INFINITY;
+
 
         while (!hasTimeExpired()) {
 
             for (int i = 0; i < currentAlgorithm.length; i++) {
 
                 newFitness = problemDomain.applyHeuristic(currentAlgorithm[i], 1, 2);
+
+                if (newFitness < bestFitness) {
+                    bestFitness = newFitness;
+                }
 
                 delta = currentFitness - newFitness;
 
@@ -103,16 +109,16 @@ public class AlgorithmFitnessAverage extends HyperHeuristic {
                 noImprovementCounter = 0;
             } else {
 
-                sb.append(itteration + "," + problemInstance + "," + problemSeed + "," + algorithmSeed + "," + startingFitness + "," + algorithmIndex + "," + currentFitness + "," + iterations + "," + Arrays.toString(currentAlgorithm) + "\n");
+                sb.append(itteration + "," + problemInstance + "," + problemSeed + "," + algorithmSeed + "," + startingFitness + "," + algorithmIndex + "," + bestFitness + "," + iterations + "," + Arrays.toString(currentAlgorithm) + "\n");
 
                 if (algorithmIndex < algorithms.size() - 1) {
                     algorithmIndex++;
-
                     currentAlgorithm = algorithms.get(algorithmIndex);
                     iterations = 0;
                     noImprovementCounter = 0;
                     problemDomain.copySolution(0, 1);
-                    currentFitness = Double.POSITIVE_INFINITY;
+                    currentFitness = startingFitness;
+                    bestFitness = Double.POSITIVE_INFINITY;
                 } else {
                     try {
                         this.writeToFile(sb.toString());
