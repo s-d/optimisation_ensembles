@@ -8,10 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- *
- */
-
 class AlgorithmFitnessAverage extends HyperHeuristic {
 
     private ArrayList<int[]> algorithms;
