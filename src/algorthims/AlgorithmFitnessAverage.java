@@ -1,3 +1,8 @@
+/*
+ * AlgorithmFitnessAverage
+ * Sam Dixon
+ */
+
 package algorthims;
 
 import AbstractClasses.HyperHeuristic;
@@ -8,26 +13,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * Created by 40056761 on 20/05/2016.
- */
-public class AlgorithmFitnessAverage extends HyperHeuristic {
+class AlgorithmFitnessAverage extends HyperHeuristic {
 
-    private int numberOfHeuristics;
     private ArrayList<int[]> algorithms;
     private String filePath;
-    private long algorithmSeed, problemSeed, timeLimit;
-    private int problemInstance, itteration;
+    private int numberOfHeuristics;
+    private int problemInstance;
+    private int iteration;
+    private long algorithmSeed;
+    private long problemSeed;
 
-    public AlgorithmFitnessAverage(long algorithmSeed, long problemSeed, int problemInstance, long timeLimit, int iteration, String filePath) {
+    AlgorithmFitnessAverage(long algorithmSeed, long problemSeed, int problemInstance,
+                            int iteration, String filePath) {
         super(algorithmSeed);
         this.algorithmSeed = algorithmSeed;
         this.problemSeed = problemSeed;
         this.problemInstance = problemInstance;
-        this.timeLimit = timeLimit;
         this.filePath = filePath;
-        this.itteration = iteration;
-
+        this.iteration = iteration;
     }
 
     private void generateAlgorithms() {
@@ -36,7 +39,6 @@ public class AlgorithmFitnessAverage extends HyperHeuristic {
         for (int i = 0; i < numberOfHeuristics; i++) {
             for (int j = 0; j < numberOfHeuristics; j++) {
                 for (int k = 0; k < numberOfHeuristics; k++) {
-
                     int[] algorithm = new int[3];
                     algorithm[0] = i;
                     algorithm[1] = j;
@@ -45,6 +47,7 @@ public class AlgorithmFitnessAverage extends HyperHeuristic {
                 }
             }
         }
+
     }
 
     private void writeToFile(String data) throws IOException {
@@ -57,35 +60,29 @@ public class AlgorithmFitnessAverage extends HyperHeuristic {
 
     @Override
     protected void solve(ProblemDomain problemDomain) {
-
         StringBuilder sb = new StringBuilder();
-
         int noImprovementCounter = 0;
         int algorithmIndex = 0;
         int iterations = 0;
-        double delta;
-        double newFitness;
+        int[] currentAlgorithm;
 
         this.numberOfHeuristics = problemDomain.getNumberOfHeuristics() - 1;
 
         generateAlgorithms();
-
-        int[] currentAlgorithm = algorithms.get(algorithmIndex);
+        currentAlgorithm = algorithms.get(algorithmIndex);
 
         problemDomain.setMemorySize(3);
         problemDomain.initialiseSolution(0);
         problemDomain.copySolution(0, 1);
 
-        double startingFitness = problemDomain.getBestSolutionValue();
-        double currentFitness = startingFitness;
-        double bestFitness = Double.POSITIVE_INFINITY;
-
-
         while (!hasTimeExpired()) {
+            double startingFitness = problemDomain.getBestSolutionValue();
+            double currentFitness = startingFitness;
+            double bestFitness = Double.POSITIVE_INFINITY;
+            double delta;
 
-            for (int i = 0; i < currentAlgorithm.length; i++) {
-
-                newFitness = problemDomain.applyHeuristic(currentAlgorithm[i], 1, 2);
+            for (int algorithm : currentAlgorithm) {
+                double newFitness = problemDomain.applyHeuristic(algorithm, 1, 2);
 
                 if (newFitness < bestFitness) {
                     bestFitness = newFitness;
@@ -97,7 +94,6 @@ public class AlgorithmFitnessAverage extends HyperHeuristic {
                     problemDomain.copySolution(2, 1);
                     currentFitness = newFitness;
                     noImprovementCounter = 0;
-
                 } else {
                     noImprovementCounter++;
                 }
@@ -108,8 +104,10 @@ public class AlgorithmFitnessAverage extends HyperHeuristic {
             if (noImprovementCounter < 3) {
                 noImprovementCounter = 0;
             } else {
-
-                sb.append(itteration + "," + problemInstance + "," + problemSeed + "," + algorithmSeed + "," + startingFitness + "," + algorithmIndex + "," + bestFitness + "," + iterations + "," + Arrays.toString(currentAlgorithm) + "\n");
+                sb.append(iteration).append(",").append(problemInstance).append(",").append(problemSeed)
+                        .append(",").append(algorithmSeed).append(",").append(startingFitness).append(",")
+                        .append(algorithmIndex).append(",").append(bestFitness).append(",").append(iterations)
+                        .append(",").append(Arrays.toString(currentAlgorithm)).append("\n");
 
                 if (algorithmIndex < algorithms.size() - 1) {
                     algorithmIndex++;
@@ -117,8 +115,6 @@ public class AlgorithmFitnessAverage extends HyperHeuristic {
                     iterations = 0;
                     noImprovementCounter = 0;
                     problemDomain.copySolution(0, 1);
-                    currentFitness = startingFitness;
-                    bestFitness = Double.POSITIVE_INFINITY;
                 } else {
                     try {
                         this.writeToFile(sb.toString());
@@ -131,10 +127,12 @@ public class AlgorithmFitnessAverage extends HyperHeuristic {
                 }
             }
         }
+
     }
 
     @Override
     public String toString() {
         return "AlgorithmFitness";
     }
+
 }
