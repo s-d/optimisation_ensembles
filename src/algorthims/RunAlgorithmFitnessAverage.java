@@ -1,8 +1,3 @@
-/*
- * RunAlgorithmFitnessAverage
- * Sam Dixon
- */
-
 package algorthims;
 
 import AbstractClasses.HyperHeuristic;
@@ -22,8 +17,8 @@ public class RunAlgorithmFitnessAverage {
 
         //file writer that creates new file and adds data headers
         FileWriter fw = new FileWriter(filePath, true);
-        fw.write("iteration,problem instance,problem seed,algorithm seed,starting fitness,algorithm " +
-                "number,fitness,number of iterations,heuristics, , \n");
+        fw.write("iteration,problem instance,problem seed,algorithm seed,starting fitness,algorithm number," +
+                "fitness,number of iterations,heuristics, , \n");
         fw.flush();
         fw.close();
 
