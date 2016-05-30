@@ -7,7 +7,7 @@ import BinPacking.BinPacking;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class RunAlgorithmFitnessAverage {
+public class RunAlgorithmData {
 
     public static void main(String[] args) throws IOException {
         long timeLimit;
@@ -17,11 +17,11 @@ public class RunAlgorithmFitnessAverage {
         int problemInstance = 0;    //starting problem instance
         HyperHeuristic algorithm;
         ProblemDomain problem = new BinPacking(0);
-
-        AlgorithmFitnessAverage.setNumberOfHeuristics(problem.getNumberOfHeuristics()-1);
-        AlgorithmFitnessAverage.generateAlgorithms();
-
         String filePath = "data/testAlgorithmData" + iterations + ".csv";
+
+        AlgorithmData.setFilePath(filePath);
+        AlgorithmData.setNumberOfHeuristics(problem.getNumberOfHeuristics()-1);
+        AlgorithmData.generateAlgorithms();
 
         /* file writer that creates new file and adds data headers */
         FileWriter fw = new FileWriter(filePath, true);
@@ -39,8 +39,8 @@ public class RunAlgorithmFitnessAverage {
             /* inner loop, runs a problem "iterations" times */
             for (int j = 0; j < iterations; j++) {
                 problem = new BinPacking(problemSeed);
-                algorithm = new AlgorithmFitnessAverage(algorithmSeed, problemSeed,
-                        problemInstance, j, filePath);
+                algorithm = new AlgorithmData(algorithmSeed, problemSeed,
+                        problemInstance, j);
 
                 problem.loadInstance(problemInstance);
 
@@ -52,8 +52,6 @@ public class RunAlgorithmFitnessAverage {
                 algorithmSeed++;
                 System.out.println(j);
             }
-
-            System.out.println("Problem instance " + problemInstance + " complete");
             problemInstance++;
         }
     }

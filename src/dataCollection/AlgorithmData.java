@@ -1,4 +1,4 @@
-package algorthims;
+package dataCollection;
 
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
@@ -8,13 +8,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-class AlgorithmFitnessAverage extends HyperHeuristic {
+/**
+ * Created by 40056761 on 30/05/2016.
+ */
+public class AlgorithmData extends HyperHeuristic {
+
     private static ArrayList<int[]> algorithms;
     private static int numberOfHeuristics;
     private int problemInstance;
     private long algorithmSeed;
     private long problemSeed;
-    private String filePath;
     private int iteration;
 
     /**
@@ -24,15 +27,13 @@ class AlgorithmFitnessAverage extends HyperHeuristic {
      * @param problemSeed     seed used to generate problem
      * @param problemInstance the instance of the problem being solved
      * @param iteration       the current iteration
-     * @param filePath        path to output file
      */
-    AlgorithmFitnessAverage(long algorithmSeed, long problemSeed, int problemInstance,
-                            int iteration, String filePath) {
+    AlgorithmData(long algorithmSeed, long problemSeed, int problemInstance,
+                  int iteration) {
         super(algorithmSeed);
         this.algorithmSeed = algorithmSeed;
         this.problemSeed = problemSeed;
         this.problemInstance = problemInstance;
-        this.filePath = filePath;
         this.iteration = iteration;
 
     }
@@ -63,13 +64,15 @@ class AlgorithmFitnessAverage extends HyperHeuristic {
      * @param data the string to be written
      * @throws IOException if file cannot be found/opened
      */
+/*
     private void writeToFile(String data) throws IOException {
         System.out.println("writing to file");
-        FileWriter fw = new FileWriter(this.filePath, true);
+        FileWriter fw = new FileWriter(filePath, true);
         fw.append(data);
         fw.flush();
         fw.close();
     }
+*/
 
     /**
      * attempts to solve a problem using every possible algorithm
@@ -144,12 +147,11 @@ class AlgorithmFitnessAverage extends HyperHeuristic {
                 } else {    //if final algorithm
                     /* write all algorithm data to the output file */
                     try {
-                        this.writeToFile(sb.toString());
-                    } catch (IOException e) {
+                        RunDataCollection.WriteData(sb.toString());
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     /* finish */
-                    System.out.println("instance " + problemInstance + " complete");
                     return;
                 }
             }
@@ -167,8 +169,9 @@ class AlgorithmFitnessAverage extends HyperHeuristic {
         return "AlgorithmFitness";
     }
 
-
-    public static void setNumberOfHeuristics(int numberOfHeuristics) {
-        AlgorithmFitnessAverage.numberOfHeuristics = numberOfHeuristics;
+    static void setNumberOfHeuristics(int numberOfHeuristics) {
+        AlgorithmData.numberOfHeuristics = numberOfHeuristics;
     }
+
+
 }
