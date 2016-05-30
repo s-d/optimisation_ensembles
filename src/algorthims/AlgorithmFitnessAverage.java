@@ -9,14 +9,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 class AlgorithmFitnessAverage extends HyperHeuristic {
-
-    private ArrayList<int[]> algorithms;
-    private String filePath;
-    private int numberOfHeuristics;
+    private static ArrayList<int[]> algorithms;
+    private static int numberOfHeuristics;
     private int problemInstance;
-    private int iteration;
     private long algorithmSeed;
     private long problemSeed;
+    private String filePath;
+    private int iteration;
 
     /**
      * sole constructor
@@ -35,13 +34,14 @@ class AlgorithmFitnessAverage extends HyperHeuristic {
         this.problemInstance = problemInstance;
         this.filePath = filePath;
         this.iteration = iteration;
+
     }
 
     /**
      * fills  an array with all the possible combinations of algorithms
      */
-    private void generateAlgorithms() {
-        this.algorithms = new ArrayList<>();
+    static void generateAlgorithms() {
+        algorithms = new ArrayList<>();
 
         for (int i = 0; i < numberOfHeuristics; i++) {
             for (int j = 0; j < numberOfHeuristics; j++) {
@@ -50,7 +50,7 @@ class AlgorithmFitnessAverage extends HyperHeuristic {
                     algorithm[0] = i;
                     algorithm[1] = j;
                     algorithm[2] = k;
-                    this.algorithms.add(algorithm);
+                    algorithms.add(algorithm);
                 }
             }
         }
@@ -90,8 +90,6 @@ class AlgorithmFitnessAverage extends HyperHeuristic {
         double delta;
 
         /* get number of available heuristics (minus last one which we don't want) */
-        this.numberOfHeuristics = problemDomain.getNumberOfHeuristics() - 1;
-        generateAlgorithms();
         currentAlgorithm = algorithms.get(algorithmIndex);
 
         /* initialise the problem to be solved */
@@ -130,7 +128,7 @@ class AlgorithmFitnessAverage extends HyperHeuristic {
                 /* append algorithm data to the string builder */
                 sb.append(iteration).append(",").append(problemInstance).append(",").append(problemSeed)
                         .append(",").append(algorithmSeed).append(",").append(startingFitness).append(",")
-                        .append(algorithmIndex).append(",").append(bestFitness).append(",").append(iterations/3)
+                        .append(algorithmIndex).append(",").append(bestFitness).append(",").append(iterations / 3)
                         .append(",\"").append(Arrays.toString(currentAlgorithm)).append("\"\n");
 
                 /* determine if there are any more algorithms to test */
@@ -169,4 +167,8 @@ class AlgorithmFitnessAverage extends HyperHeuristic {
         return "AlgorithmFitness";
     }
 
+
+    public static void setNumberOfHeuristics(int numberOfHeuristics) {
+        AlgorithmFitnessAverage.numberOfHeuristics = numberOfHeuristics;
+    }
 }
