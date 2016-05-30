@@ -1,4 +1,4 @@
-package dataCollection;
+package threadedAlgorithm;
 
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
@@ -14,7 +14,6 @@ import BinPacking.BinPacking;
     ProblemThread(int iterations, int problemInstance) {
         this.iterations = iterations;
         this.problemInstance = problemInstance;
-        threadMessage("Thread created.");
     }
 
     private static void threadMessage(String message) {

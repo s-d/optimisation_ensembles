@@ -1,9 +1,8 @@
-package dataCollection;
+package threadedAlgorithm;
 
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;

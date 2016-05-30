@@ -1,4 +1,4 @@
-package dataCollection;
+package threadedAlgorithm;
 
 import java.io.FileWriter;
 
