@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-/**
- * Created by 40056761 on 31/05/2016.
- */
-public class HeuristicFactory {
+class HeuristicFactory {
 
     private static final int NUMBER_OF_HEURISTICS = 7;
     private static ArrayList<Algorithm> algorithms;
@@ -35,14 +32,14 @@ public class HeuristicFactory {
         }
     }
 
-    public static ArrayList<Algorithm> getAlgorithms() {
+    static ArrayList<Algorithm> getAlgorithms() {
         if (algorithms == null) {
             generateAlgorithms();
         }
         return algorithms;
     }
 
-    public static ArrayList<Algorithm> getRandomAlgorithms() {
+    static ArrayList<Algorithm> getRandomAlgorithms() {
         if (algorithms == null) {
             generateAlgorithms();
         }

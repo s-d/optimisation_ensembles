@@ -1,32 +1,30 @@
 package ensembles;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
-/**
- * Created by 40056761 on 31/05/2016.
- */
-public class Ensemble {
+class Ensemble {
 
     private static int index = 1;
     private int id;
     private ArrayList<Algorithm> algorithms;
 
-    public Ensemble(int id) {
+    Ensemble(int id) {
         this.id = id;
         this.algorithms = new ArrayList<>();
     }
 
-    public Ensemble(int id, ArrayList<Algorithm> algorithms) {
+    Ensemble(int id, ArrayList<Algorithm> algorithms) {
         this(id);
         this.algorithms = algorithms;
     }
 
-    public void appendAlgorithm(Algorithm alg) {
+    void appendAlgorithm(Algorithm alg) {
         this.algorithms.add(alg);
     }
 
-    public static Ensemble generateEnsemble() {
+    static Ensemble generateEnsemble() {
         ArrayList<Algorithm> randomAlgorithms = HeuristicFactory.getRandomAlgorithms();
         Ensemble ens = new Ensemble(index - 1);
 
@@ -41,20 +39,21 @@ public class Ensemble {
 
     @Override
     public String toString() {
-        String out = "";
-
+        int out[] = new int[this.algorithms.size()];
+        int index = 0;
         for (Algorithm alg : algorithms
                 ) {
-            out += alg.getId() + " ";
+            out[index] = alg.getId();
+            index++;
         }
-        return out;
+        return Arrays.toString(out);
     }
 
-    public int getId() {
+    int getId() {
         return id;
     }
 
-    public ArrayList<Algorithm> getAlgorithms() {
+    ArrayList<Algorithm> getAlgorithms() {
         return algorithms;
     }
 
