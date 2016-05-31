@@ -5,45 +5,51 @@ import java.util.Collections;
 import java.util.Random;
 
 /**
- * Created by 40056761 on 30/05/2016.
+ * Created by 40056761 on 31/05/2016.
  */
-public class Algorithms {
+public class HeuristicFactory {
+
     private static final int NUMBER_OF_HEURISTICS = 7;
-    private static ArrayList<int[]> algorithms;
+    private static ArrayList<Algorithm> algorithms;
     private static Random rnd;
 
     private static void generateAlgorithms() {
         algorithms = new ArrayList<>();
         rnd = new Random(1000);
+        int index = 0;
+        int heuristics[];
 
         for (int i = 0; i < NUMBER_OF_HEURISTICS; i++) {
             for (int j = 0; j < NUMBER_OF_HEURISTICS; j++) {
                 for (int k = 0; k < NUMBER_OF_HEURISTICS; k++) {
-                    int[] algorithm = new int[3];
-                    algorithm[0] = i;
-                    algorithm[1] = j;
-                    algorithm[2] = k;
+                    heuristics = new int[3];
+                    heuristics[0] = i;
+                    heuristics[1] = j;
+                    heuristics[2] = k;
+
+                    Algorithm algorithm = new Algorithm(index, heuristics);
                     algorithms.add(algorithm);
+                    index++;
                 }
             }
         }
     }
 
-    public static ArrayList<int[]> getAlgorithms() {
+    public static ArrayList<Algorithm> getAlgorithms() {
         if (algorithms == null) {
             generateAlgorithms();
         }
         return algorithms;
     }
 
-    public static ArrayList<int[]> getRandomAlgorithms() {
+    public static ArrayList<Algorithm> getRandomAlgorithms() {
         if (algorithms == null) {
             generateAlgorithms();
         }
-        ArrayList<int[]> randomAlg = (ArrayList<int[]>) algorithms.clone();
+        ArrayList<Algorithm> randomAlgorithms = (ArrayList<Algorithm>) algorithms.clone();
+        Collections.shuffle(randomAlgorithms, rnd);
 
-        Collections.shuffle(randomAlg, rnd);
-        return randomAlg;
+        return randomAlgorithms;
     }
 
 }
