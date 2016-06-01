@@ -9,7 +9,7 @@ import java.io.IOException;
 
 class RunRandomEnsembles {
 
-    private static final String FILE_PATH = "data/testEnsembleData.csv";
+    private static final String FILE_PATH = "data/EnsembleData.csv";
     private static FileWriter fw;
 
     static synchronized void WriteData(String string) throws IOException {
@@ -18,20 +18,47 @@ class RunRandomEnsembles {
     }
 
     public static void main(String args[]) throws IOException {
+        long timeLimit;
+        int problemSeed;
+        int algorithmSeed;
+        int iterations = 50;
+        int problemInstance;
+        Ensemble ensemble;
+        HyperHeuristic hh;
         fw = new FileWriter(FILE_PATH, true);
-        Ensemble ens = Ensemble.generateEnsemble();
-
+        ProblemDomain problem = new BinPacking(0);
         String header = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
-                "iteration", "problem instance", "problem seed", "algorithm seed", "starting fitness", "ensemble number", "fitness", "number of runs", "heuristics");
+                "iteration", "problem instance", "problem seed", "algorithm seed",
+                "starting fitness", "ensemble number", "fitness", "number of runs", "heuristics");
+
         WriteData(header);
 
-        ProblemDomain problem = new BinPacking(0);
-        HyperHeuristic hh = new EnsembleHyperHeuristic(ens, 1000, 1000, 0, 0);
-        problem.loadInstance(0);
-        hh.setTimeLimit(60000);
-        hh.loadProblemDomain(problem);
-        hh.run();
+        for (int i = 0; i < 69; i++) {
+            ensemble = Ensemble.generateEnsemble();
+            problemInstance = 0;
 
+            for (int j = 0; j < problem.getNumberOfInstances(); j++) {
+                problemSeed = 1000;
+                algorithmSeed = 1000;
+                timeLimit = 1000*60*10;
+
+                for (int k = 0; k < iterations; k++) {
+                    problem = new BinPacking(problemSeed);
+                    hh = new EnsembleHyperHeuristic(ensemble, algorithmSeed, problemSeed, problemInstance, k);
+
+                    problem.loadInstance(problemInstance);
+
+                    hh.setTimeLimit(timeLimit);
+                    hh.loadProblemDomain(problem);
+                    hh.run();
+
+                    problemSeed++;
+                    algorithmSeed++;
+                }
+                problemInstance++;
+            }
+
+        }
 
         fw.close();
     }

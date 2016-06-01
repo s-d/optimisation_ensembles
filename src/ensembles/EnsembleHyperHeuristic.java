@@ -2,29 +2,28 @@ package ensembles;
 
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
-import sun.dc.pr.PRError;
 
 import java.util.ArrayList;
 
 /**
  * Created by 40056761 on 31/05/2016.
  */
-public class EnsembleHyperHeuristic extends HyperHeuristic {
+class EnsembleHyperHeuristic extends HyperHeuristic {
 
     private static ArrayList<int[]> algorithms;
-    private int problemInstance;
-    private long algorithmSeed;
-    private Ensemble ensemble;
-    private long problemSeed;
     private int iteration;
+    private long algorithmSeed;
+    private int problemInstance;
+    private long problemSeed;
+    private Ensemble ensemble;
 
     EnsembleHyperHeuristic(Ensemble ensemble, long algorithmSeed, long problemSeed, int problemInstance, int iteration) {
         super(algorithmSeed);
-        this.problemInstance = problemInstance;
+        this.ensemble = ensemble;
         this.algorithmSeed = algorithmSeed;
         this.problemSeed = problemSeed;
+        this.problemInstance = problemInstance;
         this.iteration = iteration;
-        this.ensemble = ensemble;
     }
 
     @Override
@@ -46,7 +45,6 @@ public class EnsembleHyperHeuristic extends HyperHeuristic {
         currentFitness = startingFitness;
         bestFitness = Double.POSITIVE_INFINITY;
 
-
         while (!hasTimeExpired()) {
             for (Algorithm currentAlg : ensemble.getAlgorithms()) {
                 for (int currentHeuristic : currentAlg.getHeuristics()) {
@@ -63,10 +61,9 @@ public class EnsembleHyperHeuristic extends HyperHeuristic {
                     } else {
                         noImprovement++;
                     }
-
                 }   //heuristic
-
             }   //algorithm
+
             runs++;
 
             if (noImprovement < ensemble.getAlgorithms().size() * 3) {
@@ -78,7 +75,7 @@ public class EnsembleHyperHeuristic extends HyperHeuristic {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                System.out.printf("problem %d, iteration %d complete.", problemInstance, this.iteration);
+                System.out.printf("ensemble %d, problem %d, iteration %d complete.\n",ensemble.getId(), problemInstance, this.iteration);
                 return;
             }
 
