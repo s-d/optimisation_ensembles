@@ -71,7 +71,7 @@ class EnsembleHyperHeuristic extends HyperHeuristic {
             } else {
                 output = ("" + iteration + "," + problemInstance + "," + problemSeed + "," + algorithmSeed + "," + startingFitness + "," + ensemble.getId() + "," + bestFitness + "," + runs + ",\"" + ensemble + "\"\n");
                 try {
-                    RunRandomEnsembles.WriteData(output);
+                    RunSpecificEnsembles.WriteData(output);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
