@@ -12,7 +12,7 @@ class HeuristicFactory {
 
     private static void generateAlgorithms() {
         algorithms = new ArrayList<>();
-        rnd = new Random(1000);
+        rnd = new Random();
         int index = 0;
         int heuristics[];
 

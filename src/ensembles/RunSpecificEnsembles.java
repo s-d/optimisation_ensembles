@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 
-public class RunSpecificEnsembles {
+class RunSpecificEnsembles {
     private static FileWriter fw;
 
     static synchronized void WriteData(String string) throws IOException {
@@ -46,7 +46,7 @@ public class RunSpecificEnsembles {
             ensemble = Ensemble.generateEnsemble();
         }
 
-        String FILE_PATH = String.format("data/Ensemble%dData.csv", ensemble.getId());
+        String FILE_PATH = String.format("data/Ensemble%dData%d.csv", ensemble.getId(), System.nanoTime());
         fw = new FileWriter(FILE_PATH, true);
 
 
@@ -60,7 +60,8 @@ public class RunSpecificEnsembles {
 
             for (int k = 0; k < iterations; k++) {
                 problem = new BinPacking(problemSeed);
-                hh = new EnsembleHyperHeuristic(ensemble, algorithmSeed, problemSeed, problemInstance, k);
+                hh = new EnsembleHyperHeuristic(ensemble, algorithmSeed, problemSeed,
+                        problemInstance, k);
 
                 problem.loadInstance(problemInstance);
 
