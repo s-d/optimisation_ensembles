@@ -46,7 +46,7 @@ class RunSpecificEnsembles {
             ensemble = Ensemble.generateEnsemble();
         }
 
-        String FILE_PATH = String.format("data/Ensemble%dData%d.csv", ensemble.getId(), System.nanoTime());
+        String FILE_PATH = String.format("Data/Ensemble%dData%d.csv", ensemble.getId(), System.nanoTime());
         fw = new FileWriter(FILE_PATH, true);
 
 
