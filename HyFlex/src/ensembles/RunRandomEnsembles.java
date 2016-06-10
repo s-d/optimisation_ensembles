@@ -9,7 +9,7 @@ import java.io.IOException;
 
 class RunRandomEnsembles {
 
-    private static final String FILE_PATH = "Data/EnsembleData.csv";
+    private static final String FILE_PATH = "Data/ensembleData.csv";
     private static FileWriter fw;
 
     static synchronized void WriteData(String string) throws IOException {

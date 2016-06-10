@@ -2,7 +2,7 @@ import os
 import csv
 from openpyxl import Workbook
 
-saveDir = 'excel'
+saveDir = 'Excel'
 
 if not os.path.exists(saveDir):
     print('Creating new directory for converted files.')

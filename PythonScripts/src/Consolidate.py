@@ -17,6 +17,7 @@ for excelFileName in os.listdir(os.getcwd()):
     if not excelFileName.endswith('.xlsx'):
         continue
 
+    print("Adding " + excelFileName + " to file.")
     wb = load_workbook(filename=excelFileName)
     ws = wb.active
     enId = ws['F2'].value
