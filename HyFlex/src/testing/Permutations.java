@@ -9,7 +9,7 @@ public class Permutations {
 
         int maxValue = 8;
 
-        ArrayList<int[]> results = new ArrayList<int[]>();
+        ArrayList<int[]> results = new ArrayList<>();
 
         for (int i = 0; i < maxValue; i++) {
             for (int j = 0; j < maxValue; j++) {
