@@ -104,6 +104,10 @@ ENV/
 .idea/vcs.xml
 .idea/jsLibraryMappings.xml
 
+#an attempt to fix an ongoing issue
+workspace.xml
+vcs.xml
+
 # Sensitive or high-churn files:
 .idea/dataSources.ids
 .idea/dataSources.xml
