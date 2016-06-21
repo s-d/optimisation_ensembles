@@ -9,7 +9,7 @@ import java.io.*;
 /**
  * Created by 40056761 on 20/05/2016.
  */
-public class RunAlgorithmFitness {
+class RunAlgorithmFitness {
 
     public static void main(String[] args) throws IOException {
 
@@ -32,7 +32,7 @@ public class RunAlgorithmFitness {
 
             for (int j = 0; j < iterations; j++) {
                 problem = new BinPacking(problemSeed);
-                HyperHeuristic algorithm = new AlgorithmFitness(algorithmSeed, problemSeed, problemInstance, timeLimit, filePath);
+                HyperHeuristic algorithm = new AlgorithmFitness(algorithmSeed, problemSeed, problemInstance, filePath);
                 problem.loadInstance(problemInstance);
                 algorithm.setTimeLimit(timeLimit);
                 algorithm.loadProblemDomain(problem);

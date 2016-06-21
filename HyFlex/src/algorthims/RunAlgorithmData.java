@@ -7,7 +7,7 @@ import BinPacking.BinPacking;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class RunAlgorithmData {
+class RunAlgorithmData {
 
     public static void main(String[] args) throws IOException {
         long timeLimit;

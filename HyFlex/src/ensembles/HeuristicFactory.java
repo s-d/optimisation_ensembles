@@ -1,13 +1,17 @@
 package ensembles;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.Scanner;
 
 class HeuristicFactory {
 
     private static final int NUMBER_OF_HEURISTICS = 7;
     private static ArrayList<Algorithm> algorithms;
+    private static ArrayList<Algorithm> eliteAlgorithms;
     private static Random rnd;
 
     private static void generateAlgorithms() {
@@ -48,5 +52,32 @@ class HeuristicFactory {
 
         return randomAlgorithms;
     }
+
+    static ArrayList<Algorithm> getEliteAlgorithms() throws FileNotFoundException {
+        if (algorithms == null) {
+            generateAlgorithms();
+        }
+        if (eliteAlgorithms == null) {
+            eliteAlgorithms=new ArrayList<>();
+            Scanner scanner = new Scanner(new File("res/algorithmOrder.csv"));
+            scanner.useDelimiter("\r\n");
+
+            int[] algOrder = new int[343];
+            int counter = 0;
+
+            while (scanner.hasNext()) {
+                algOrder[counter] = Integer.parseInt(scanner.next());
+                counter++;
+            }
+            scanner.close();
+
+            for (int i : algOrder) {
+                eliteAlgorithms.add(algorithms.get(i));
+            }
+        }
+
+        return eliteAlgorithms;
+    }
+
 
 }

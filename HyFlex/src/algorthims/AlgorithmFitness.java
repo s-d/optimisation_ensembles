@@ -10,20 +10,20 @@ import java.util.Arrays;
 /**
  * Created by 40056761 on 20/05/2016.
  */
-public class AlgorithmFitness extends HyperHeuristic {
+class AlgorithmFitness extends HyperHeuristic {
 
     private int numberOfHeuristics;
     private ArrayList<int[]> algorithms;
     private String filePath;
-    private long algorithmSeed, problemSeed, timeLimit;
+    private long algorithmSeed;
+    private long problemSeed;
     private int problemInstance;
 
-    public AlgorithmFitness(long algorithmSeed, long problemSeed, int problemInstance, long timeLimit, String filePath) {
+    AlgorithmFitness(long algorithmSeed, long problemSeed, int problemInstance, String filePath) {
         super(algorithmSeed);
         this.algorithmSeed = algorithmSeed;
         this.problemSeed = problemSeed;
         this.problemInstance = problemInstance;
-        this.timeLimit = timeLimit;
         this.filePath = filePath;
 
     }
@@ -61,7 +61,6 @@ public class AlgorithmFitness extends HyperHeuristic {
         int noImprovementCounter = 0;
         int algorithmIndex = 0;
         int iterations = 0;
-        int totalIterations = 0;
         double delta;
         double newFitness;
 
@@ -80,7 +79,7 @@ public class AlgorithmFitness extends HyperHeuristic {
 
         while (!hasTimeExpired()) {
 
-            for (int i = 0; i < currentAlgorithm.length; i++) {
+            for (int alg : currentAlgorithm) {
 //                System.out.println(totalIterations);
 //                System.out.println("Alg: " + algorithmIndex);
 //                System.out.println("It: " + iterations);
@@ -88,9 +87,7 @@ public class AlgorithmFitness extends HyperHeuristic {
 //                System.out.println("NoImprovements: " + noImprovementCounter + "\n");
 
 
-
-
-                newFitness = problemDomain.applyHeuristic(currentAlgorithm[i], 1, 2);
+                newFitness = problemDomain.applyHeuristic(alg, 1, 2);
 //                System.out.println("cur: " + currentFitness);
 //                System.out.println("new: " + newFitness);
                 delta = currentFitness - newFitness;
@@ -105,14 +102,13 @@ public class AlgorithmFitness extends HyperHeuristic {
                 }
 
                 iterations++;
-                totalIterations++;
             }
 
             if (noImprovementCounter < 3) {
                 noImprovementCounter = 0;
             } else {
 
-                sb.append(problemInstance + "," + problemSeed + "," + algorithmSeed + "," + startingFitness + "," + algorithmIndex + "," + currentFitness + "," + iterations + "," + Arrays.toString(currentAlgorithm) + "\n");
+                sb.append(problemInstance).append(",").append(problemSeed).append(",").append(algorithmSeed).append(",").append(startingFitness).append(",").append(algorithmIndex).append(",").append(currentFitness).append(",").append(iterations).append(",").append(Arrays.toString(currentAlgorithm)).append("\n");
 
                 if (algorithmIndex < algorithms.size()-1) {
                     algorithmIndex++;
