@@ -98,30 +98,30 @@ ENV/
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/dictionaries
-.idea/vcs.xml
-.idea/jsLibraryMappings.xml
+*/.idea/workspace.xml
+*/.idea/tasks.xml
+*/.idea/dictionaries
+*/.idea/vcs.xml
+*/.idea/jsLibraryMappings.xml
 
 #an attempt to fix an ongoing issue
 workspace.xml
 vcs.xml
 
 # Sensitive or high-churn files:
-.idea/dataSources.ids
-.idea/dataSources.xml
-.idea/dataSources.local.xml
-.idea/sqlDataSources.xml
-.idea/dynamic.xml
-.idea/uiDesigner.xml
+*/.idea/dataSources.ids
+*/.idea/dataSources.xml
+*/.idea/dataSources.local.xml
+*/.idea/sqlDataSources.xml
+*/.idea/dynamic.xml
+*/.idea/uiDesigner.xml
 
 # Gradle:
-.idea/gradle.xml
-.idea/libraries
+*/.idea/gradle.xml
+*/.idea/libraries
 
 # Mongo Explorer plugin:
-.idea/mongoSettings.xml
+*/.idea/mongoSettings.xml
 
 ## File-based project format:
 *.iws
@@ -129,7 +129,7 @@ vcs.xml
 ## Plugin-specific files:
 
 # IntelliJ
-/out/
+*/out/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
@@ -155,26 +155,26 @@ fabric.properties
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/dictionaries
-.idea/vcs.xml
-.idea/jsLibraryMappings.xml
+*/.idea/workspace.xml
+*/.idea/tasks.xml
+*/.idea/dictionaries
+*/.idea/vcs.xml
+*/.idea/jsLibraryMappings.xml
 
 # Sensitive or high-churn files:
-.idea/dataSources.ids
-.idea/dataSources.xml
-.idea/dataSources.local.xml
-.idea/sqlDataSources.xml
-.idea/dynamic.xml
-.idea/uiDesigner.xml
+*/.idea/dataSources.ids
+*/.idea/dataSources.xml
+*/.idea/dataSources.local.xml
+*/.idea/sqlDataSources.xml
+*/.idea/dynamic.xml
+*/.idea/uiDesigner.xml
 
 # Gradle:
-.idea/gradle.xml
-.idea/libraries
+*/.idea/gradle.xml
+*/.idea/libraries
 
 # Mongo Explorer plugin:
-.idea/mongoSettings.xml
+*/.idea/mongoSettings.xml
 
 ## File-based project format:
 *.iws
