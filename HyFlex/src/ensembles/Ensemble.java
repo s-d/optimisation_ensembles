@@ -1,6 +1,7 @@
 package ensembles;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -38,9 +39,10 @@ class Ensemble {
         return ens;
     }
 
-    static Ensemble generateEliteEnsemble() throws FileNotFoundException {
-        ArrayList<Algorithm> eliteAlgorithms = HeuristicFactory.getEliteAlgorithms();
-        Ensemble ens = new Ensemble(index -1);
+    static Ensemble generateEliteEnsemble() throws IOException {
+        HeuristicFactory hf = new HeuristicFactory();
+        ArrayList<Algorithm> eliteAlgorithms = hf.getEliteAlgorithms();
+        Ensemble ens = new Ensemble(index - 1);
 
         for (int i = 0; i < index * 5; i++) {
             if (i < eliteAlgorithms.size()) {
@@ -55,8 +57,7 @@ class Ensemble {
     public String toString() {
         int out[] = new int[this.algorithms.size()];
         int index = 0;
-        for (Algorithm alg : algorithms
-                ) {
+        for (Algorithm alg : algorithms) {
             out[index] = alg.getId();
             index++;
         }

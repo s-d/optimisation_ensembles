@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class ReadAlgFile {
 
     public static void main(String[] args) throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File("res/algorithmOrder.csv"));
+        Scanner scanner = new Scanner(new File("/algorithmOrder.csv"));
         scanner.useDelimiter("\r\n");
 
         int[] alg = new int[343];

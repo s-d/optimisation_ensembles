@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="DiverseHeuristics:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/DiverseHeuristics_jar</output-path>
-    <root id="archive" name="DiverseHeuristics.jar">
+  <artifact type="jar" name="Ensembles:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Ensembles_jar</output-path>
+    <root id="archive" name="Ensembles.jar">
       <element id="module-output" name="DiverseHeuristics" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/chesc.jar" path-in-jar="/" />
     </root>

@@ -1,11 +1,10 @@
 package ensembles;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-import java.util.Scanner;
+
 
 class HeuristicFactory {
 
@@ -13,6 +12,10 @@ class HeuristicFactory {
     private static ArrayList<Algorithm> algorithms;
     private static ArrayList<Algorithm> eliteAlgorithms;
     private static Random rnd;
+
+    HeuristicFactory(){
+
+    }
 
     private static void generateAlgorithms() {
         algorithms = new ArrayList<>();
@@ -53,23 +56,26 @@ class HeuristicFactory {
         return randomAlgorithms;
     }
 
-    static ArrayList<Algorithm> getEliteAlgorithms() throws FileNotFoundException {
+    ArrayList<Algorithm> getEliteAlgorithms() throws IOException {
         if (algorithms == null) {
             generateAlgorithms();
         }
         if (eliteAlgorithms == null) {
-            eliteAlgorithms=new ArrayList<>();
-            Scanner scanner = new Scanner(new File("res/algorithmOrder.csv"));
-            scanner.useDelimiter("\r\n");
+            eliteAlgorithms = new ArrayList<>();
+
+            InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("algorithmOrder.csv");
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader br = new BufferedReader(isr);
 
             int[] algOrder = new int[343];
             int counter = 0;
 
-            while (scanner.hasNext()) {
-                algOrder[counter] = Integer.parseInt(scanner.next());
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                algOrder[counter] = Integer.parseInt(line);
                 counter++;
             }
-            scanner.close();
 
             for (int i : algOrder) {
                 eliteAlgorithms.add(algorithms.get(i));
