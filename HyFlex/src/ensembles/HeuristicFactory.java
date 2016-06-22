@@ -16,10 +16,6 @@ class HeuristicFactory {
     private static ArrayList<Algorithm> eliteAlgorithms;
     private static Random rnd;
 
-    HeuristicFactory() {
-
-    }
-
     private static void generateAlgorithms() {
         algorithms = new ArrayList<>();
         rnd = new Random();
@@ -52,7 +48,7 @@ class HeuristicFactory {
         return randomAlgorithms;
     }
 
-    ArrayList<Algorithm> getEliteAlgorithms() throws IOException {
+    static ArrayList<Algorithm> getEliteAlgorithms() throws IOException {
         if (algorithms == null) {
             generateAlgorithms();
         }

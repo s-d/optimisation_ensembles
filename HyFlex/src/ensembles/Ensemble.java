@@ -29,8 +29,7 @@ class Ensemble {
     }
 
     static Ensemble generateEliteEnsemble() throws IOException {
-        HeuristicFactory hf = new HeuristicFactory();
-        ArrayList<Algorithm> eliteAlgorithms = hf.getEliteAlgorithms();
+        ArrayList<Algorithm> eliteAlgorithms = HeuristicFactory.getEliteAlgorithms();
         Ensemble ens = new Ensemble(index - 1);
 
         for (int i = 0; i < index * 5; i++) {

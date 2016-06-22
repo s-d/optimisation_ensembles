@@ -68,15 +68,15 @@ class RunSpecificEnsembles {
             }
         }
 
-        File ensDir = new File(ensDirName);
-
-        if (!ensDir.exists()) {
-            ensDir.mkdirs();
-        }
         if (elite) {
             File eliteDir = new File(eliteDirName);
             if (!eliteDir.exists()) {
                 eliteDir.mkdirs();
+            }
+        } else {
+            File ensDir = new File(ensDirName);
+            if (!ensDir.exists()) {
+                ensDir.mkdirs();
             }
         }
 
