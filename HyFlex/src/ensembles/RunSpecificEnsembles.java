@@ -23,7 +23,7 @@ class RunSpecificEnsembles {
         int iterations = 50;
         int problemInstance = 0;
         int ensembleNumber = 0;
-        boolean elite = false;
+        boolean eliteFlag = false;
         String fileType = "e";
         String ensDirName = "Data/Ensembles";
         String eliteDirName = "Data/EliteEnsembles";
@@ -34,41 +34,39 @@ class RunSpecificEnsembles {
                 "iteration", "problem instance", "problem seed", "algorithm seed",
                 "starting fitness", "ensemble number", "fitness", "number of runs", "heuristics");
 
+
         if (args != null) {
-            if (args[0].equals("E") || args[0].equals("e")) {
-                elite = true;
-                fileType = "eliteE";
-                System.out.println("Elite Mode: Engaged.");
+            int argIndex = 0;
+            String arg;
 
-                try {
-                    ensembleNumber = Integer.parseInt(args[1]);
-                } catch (NumberFormatException e) {
-                    System.out.println("Argument must be an int.");
-                    System.exit(0);
-                }
+            while (argIndex < args.length) {
+                arg = args[argIndex++];
 
-            } else {
-                try {
-                    ensembleNumber = Integer.parseInt(args[0]);
-                } catch (NumberFormatException e) {
-                    System.out.println("Argument must be an int.");
-                    System.exit(0);
+                if (arg.equals("-e")) {
+                    eliteFlag = !eliteFlag;
+                    System.out.println("Elite Mode: Engaged");
+                } else {
+                    try {
+                        ensembleNumber = Integer.parseInt(arg);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Illegal operation. Integer required");
+                    }
                 }
             }
         } else {
-            System.out.println("Argument must be an int.");
-            System.exit(0);
+            System.out.println("Illegal operation. Integer required");
         }
 
+
         for (int i = 0; i < ensembleNumber + 1; i++) {
-            if (elite) {
+            if (eliteFlag) {
                 ensemble = Ensemble.generateEliteEnsemble();
             } else {
                 ensemble = Ensemble.generateEnsemble();
             }
         }
 
-        if (elite) {
+        if (eliteFlag) {
             File eliteDir = new File(eliteDirName);
             if (!eliteDir.exists()) {
                 eliteDir.mkdirs();
@@ -80,7 +78,7 @@ class RunSpecificEnsembles {
             }
         }
 
-        String saveDir = elite ? eliteDirName : ensDirName;
+        String saveDir = eliteFlag ? eliteDirName : ensDirName;
 
         String FILE_PATH = String.format("%s/%snsemble%dData%d.csv", saveDir, fileType, ensemble.getId(), System.nanoTime());
         fw = new FileWriter(FILE_PATH, true);
@@ -95,7 +93,7 @@ class RunSpecificEnsembles {
             for (int k = 0; k < iterations; k++) {
                 problem = new BinPacking(problemSeed);
                 hh = new EnsembleHyperHeuristic(ensemble, algorithmSeed, problemSeed,
-                        problemInstance, k);
+                        problemInstance, k, eliteFlag);
 
                 problem.loadInstance(problemInstance);
 

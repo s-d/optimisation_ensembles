@@ -10,14 +10,18 @@ class EnsembleHyperHeuristic extends HyperHeuristic {
     private int problemInstance;
     private long problemSeed;
     private Ensemble ensemble;
+    private String eliteTag = "E";
 
-    EnsembleHyperHeuristic(Ensemble ensemble, long algorithmSeed, long problemSeed, int problemInstance, int iteration) {
+    EnsembleHyperHeuristic(Ensemble ensemble, long algorithmSeed, long problemSeed, int problemInstance, int iteration, boolean eliteFlag) {
         super(algorithmSeed);
         this.ensemble = ensemble;
         this.algorithmSeed = algorithmSeed;
         this.problemSeed = problemSeed;
         this.problemInstance = problemInstance;
         this.iteration = iteration;
+        if (eliteFlag) {
+            eliteTag = "Elite e";
+        }
     }
 
     @Override
@@ -69,7 +73,7 @@ class EnsembleHyperHeuristic extends HyperHeuristic {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                System.out.printf("ensemble %d, problem %d, iteration %d complete.\n", ensemble.getId(), problemInstance, this.iteration);
+                System.out.printf("%snsemble %d, problem %d, iteration %d complete.\n", eliteTag, ensemble.getId(), problemInstance, this.iteration);
                 return;
             }
 
