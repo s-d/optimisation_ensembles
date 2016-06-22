@@ -1,10 +1,8 @@
 package ensembles;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 
 class Ensemble {
 
@@ -12,18 +10,9 @@ class Ensemble {
     private int id;
     private ArrayList<Algorithm> algorithms;
 
-    Ensemble(int id) {
+    private Ensemble(int id) {
         this.id = id;
         this.algorithms = new ArrayList<>();
-    }
-
-    Ensemble(int id, ArrayList<Algorithm> algorithms) {
-        this(id);
-        this.algorithms = algorithms;
-    }
-
-    void appendAlgorithm(Algorithm alg) {
-        this.algorithms.add(alg);
     }
 
     static Ensemble generateEnsemble() {
@@ -51,6 +40,10 @@ class Ensemble {
         }
         index++;
         return ens;
+    }
+
+    private void appendAlgorithm(Algorithm alg) {
+        this.algorithms.add(alg);
     }
 
     @Override

@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-
 class RunSpecificEnsembles {
     private static FileWriter fw;
 
@@ -25,9 +24,9 @@ class RunSpecificEnsembles {
         int problemInstance = 0;
         int ensembleNumber = 0;
         boolean elite = false;
-        String eliteFile = "e";
-        String ensDir = "Data/Ensembles";
-        String eliteDir = "Data/EliteEnsembles";
+        String fileType = "e";
+        String ensDirName = "Data/Ensembles";
+        String eliteDirName = "Data/EliteEnsembles";
         Ensemble ensemble = null;
         HyperHeuristic hh;
         ProblemDomain problem = new BinPacking(0);
@@ -38,14 +37,16 @@ class RunSpecificEnsembles {
         if (args != null) {
             if (args[0].equals("E") || args[0].equals("e")) {
                 elite = true;
-                eliteFile = "eliteE";
+                fileType = "eliteE";
                 System.out.println("Elite Mode: Engaged.");
+
                 try {
                     ensembleNumber = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
                     System.out.println("Argument must be an int.");
                     System.exit(0);
                 }
+
             } else {
                 try {
                     ensembleNumber = Integer.parseInt(args[0]);
@@ -67,23 +68,21 @@ class RunSpecificEnsembles {
             }
         }
 
-        File data = new File("Data");
-        File ens = new File(ensDir);
-        File el = new File(eliteDir);
+        File ensDir = new File(ensDirName);
 
-        if (!data.exists()) {
-            data.mkdir();
+        if (!ensDir.exists()) {
+            ensDir.mkdirs();
+        }
+        if (elite) {
+            File eliteDir = new File(eliteDirName);
+            if (!eliteDir.exists()) {
+                eliteDir.mkdirs();
+            }
         }
 
-        if (!ens.exists()) {
-            ens.mkdir();
-        }
-        if (!el.exists()) {
-            el.mkdir();
-        }
-        String saveDir = elite ? eliteDir : ensDir;
+        String saveDir = elite ? eliteDirName : ensDirName;
 
-        String FILE_PATH = String.format("%s/%snsemble%dData%d.csv", saveDir, eliteFile, ensemble.getId(), System.nanoTime());
+        String FILE_PATH = String.format("%s/%snsemble%dData%d.csv", saveDir, fileType, ensemble.getId(), System.nanoTime());
         fw = new FileWriter(FILE_PATH, true);
 
         WriteData(header);

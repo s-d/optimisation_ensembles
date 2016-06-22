@@ -20,7 +20,7 @@ class RunAlgorithmData {
         String filePath = "data/testAlgorithmData" + iterations + ".csv";
 
         AlgorithmData.setFilePath(filePath);
-        AlgorithmData.setNumberOfHeuristics(problem.getNumberOfHeuristics()-1);
+        AlgorithmData.setNumberOfHeuristics(problem.getNumberOfHeuristics() - 1);
         AlgorithmData.generateAlgorithms();
 
         /* file writer that creates new file and adds data headers */

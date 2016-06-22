@@ -7,11 +7,11 @@ import java.io.File;
  */
 public class DirectoryFun {
     public static void main(String[] args) {
-        File dir = new File("New folder");
+        File dir = new File("path/dir");
 
-        if(!dir.exists()){
+        if (!dir.exists()) {
             System.out.println("Creating directory " + dir.getName());
-            dir.mkdir();
+            dir.mkdirs();
         }
     }
 }

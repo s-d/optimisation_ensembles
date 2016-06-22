@@ -1,6 +1,9 @@
 package ensembles;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -13,7 +16,7 @@ class HeuristicFactory {
     private static ArrayList<Algorithm> eliteAlgorithms;
     private static Random rnd;
 
-    HeuristicFactory(){
+    HeuristicFactory() {
 
     }
 
@@ -39,13 +42,6 @@ class HeuristicFactory {
         }
     }
 
-    static ArrayList<Algorithm> getAlgorithms() {
-        if (algorithms == null) {
-            generateAlgorithms();
-        }
-        return algorithms;
-    }
-
     static ArrayList<Algorithm> getRandomAlgorithms() {
         if (algorithms == null) {
             generateAlgorithms();
@@ -69,7 +65,6 @@ class HeuristicFactory {
 
             int[] algOrder = new int[343];
             int counter = 0;
-
             String line;
 
             while ((line = br.readLine()) != null) {
@@ -77,8 +72,8 @@ class HeuristicFactory {
                 counter++;
             }
 
-            for (int i : algOrder) {
-                eliteAlgorithms.add(algorithms.get(i));
+            for (int algIndex: algOrder) {
+                eliteAlgorithms.add(algorithms.get(algIndex));
             }
         }
 

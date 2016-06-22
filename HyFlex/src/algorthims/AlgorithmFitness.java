@@ -3,7 +3,8 @@ package algorthims;
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -110,7 +111,7 @@ class AlgorithmFitness extends HyperHeuristic {
 
                 sb.append(problemInstance).append(",").append(problemSeed).append(",").append(algorithmSeed).append(",").append(startingFitness).append(",").append(algorithmIndex).append(",").append(currentFitness).append(",").append(iterations).append(",").append(Arrays.toString(currentAlgorithm)).append("\n");
 
-                if (algorithmIndex < algorithms.size()-1) {
+                if (algorithmIndex < algorithms.size() - 1) {
                     algorithmIndex++;
 
                     currentAlgorithm = algorithms.get(algorithmIndex);

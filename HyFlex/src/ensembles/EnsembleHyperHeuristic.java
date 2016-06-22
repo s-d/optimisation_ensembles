@@ -3,14 +3,8 @@ package ensembles;
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 
-import java.util.ArrayList;
-
-/**
- * Created by 40056761 on 31/05/2016.
- */
 class EnsembleHyperHeuristic extends HyperHeuristic {
 
-    private static ArrayList<int[]> algorithms;
     private int iteration;
     private long algorithmSeed;
     private int problemInstance;
@@ -75,7 +69,7 @@ class EnsembleHyperHeuristic extends HyperHeuristic {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                System.out.printf("ensemble %d, problem %d, iteration %d complete.\n",ensemble.getId(), problemInstance, this.iteration);
+                System.out.printf("ensemble %d, problem %d, iteration %d complete.\n", ensemble.getId(), problemInstance, this.iteration);
                 return;
             }
 

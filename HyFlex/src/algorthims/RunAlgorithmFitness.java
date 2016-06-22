@@ -4,7 +4,8 @@ import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 import BinPacking.BinPacking;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * Created by 40056761 on 20/05/2016.

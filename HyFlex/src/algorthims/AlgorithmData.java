@@ -56,6 +56,14 @@ class AlgorithmData extends HyperHeuristic {
 
     }
 
+    static void setNumberOfHeuristics(int numberOfHeuristics) {
+        AlgorithmData.numberOfHeuristics = numberOfHeuristics;
+    }
+
+    static void setFilePath(String filePath) {
+        AlgorithmData.filePath = filePath;
+    }
+
     /**
      * writes a string to the output file
      *
@@ -164,15 +172,6 @@ class AlgorithmData extends HyperHeuristic {
     @Override
     public String toString() {
         return "AlgorithmFitness";
-    }
-
-
-    static void setNumberOfHeuristics(int numberOfHeuristics) {
-        AlgorithmData.numberOfHeuristics = numberOfHeuristics;
-    }
-
-    static void setFilePath(String filePath) {
-        AlgorithmData.filePath = filePath;
     }
 
 }
