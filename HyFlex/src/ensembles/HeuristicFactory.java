@@ -18,9 +18,10 @@ class HeuristicFactory {
 
     private static void generateAlgorithms() {
         algorithms = new ArrayList<>();
+        Algorithm algorithm;
         rnd = new Random();
-        int index = 0;
         int heuristics[];
+        int index = 0;
 
         for (int i = 0; i < NUMBER_OF_HEURISTICS; i++) {
             for (int j = 0; j < NUMBER_OF_HEURISTICS; j++) {
@@ -30,7 +31,7 @@ class HeuristicFactory {
                     heuristics[1] = j;
                     heuristics[2] = k;
 
-                    Algorithm algorithm = new Algorithm(index, heuristics);
+                    algorithm = new Algorithm(index, heuristics);
                     algorithms.add(algorithm);
                     index++;
                 }
@@ -55,7 +56,7 @@ class HeuristicFactory {
         if (eliteAlgorithms == null) {
             eliteAlgorithms = new ArrayList<>();
 
-            InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("algorithmOrder.csv");
+            InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("eliteAlgorithmOrder.csv");
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(isr);
 
@@ -68,13 +69,12 @@ class HeuristicFactory {
                 counter++;
             }
 
-            for (int algIndex: algOrder) {
+            for (int algIndex : algOrder) {
                 eliteAlgorithms.add(algorithms.get(algIndex));
             }
         }
 
         return eliteAlgorithms;
     }
-
 
 }

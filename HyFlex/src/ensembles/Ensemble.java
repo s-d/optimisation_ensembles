@@ -56,7 +56,7 @@ class Ensemble {
         return Arrays.toString(out);
     }
 
-    int getId() {
+    int getID() {
         return id;
     }
 

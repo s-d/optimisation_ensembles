@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-class AlgorithmData extends HyperHeuristic {
+class AlgorithmDataHyperHeuristic extends HyperHeuristic {
 
     private static ArrayList<int[]> algorithms;
     private static int numberOfHeuristics;
@@ -26,8 +26,8 @@ class AlgorithmData extends HyperHeuristic {
      * @param problemInstance the instance of the problem being solved
      * @param iteration       the current iteration
      */
-    AlgorithmData(long algorithmSeed, long problemSeed, int problemInstance,
-                  int iteration) {
+    AlgorithmDataHyperHeuristic(long algorithmSeed, long problemSeed, int problemInstance,
+                                int iteration) {
         super(algorithmSeed);
         this.algorithmSeed = algorithmSeed;
         this.problemSeed = problemSeed;
@@ -40,12 +40,13 @@ class AlgorithmData extends HyperHeuristic {
      * fills  an array with all the possible combinations of algorithms
      */
     static void generateAlgorithms() {
+        int[] algorithm;
         algorithms = new ArrayList<>();
 
         for (int i = 0; i < numberOfHeuristics; i++) {
             for (int j = 0; j < numberOfHeuristics; j++) {
                 for (int k = 0; k < numberOfHeuristics; k++) {
-                    int[] algorithm = new int[3];
+                    algorithm = new int[3];
                     algorithm[0] = i;
                     algorithm[1] = j;
                     algorithm[2] = k;
@@ -57,11 +58,11 @@ class AlgorithmData extends HyperHeuristic {
     }
 
     static void setNumberOfHeuristics(int numberOfHeuristics) {
-        AlgorithmData.numberOfHeuristics = numberOfHeuristics;
+        AlgorithmDataHyperHeuristic.numberOfHeuristics = numberOfHeuristics;
     }
 
     static void setFilePath(String filePath) {
-        AlgorithmData.filePath = filePath;
+        AlgorithmDataHyperHeuristic.filePath = filePath;
     }
 
     /**
@@ -171,7 +172,7 @@ class AlgorithmData extends HyperHeuristic {
      */
     @Override
     public String toString() {
-        return "AlgorithmFitness";
+        return "AlgorithmDataHyperHeuristic";
     }
 
 }

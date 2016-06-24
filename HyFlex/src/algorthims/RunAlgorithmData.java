@@ -17,11 +17,11 @@ class RunAlgorithmData {
         int problemInstance = 0;    //starting problem instance
         HyperHeuristic algorithm;
         ProblemDomain problem = new BinPacking(0);
-        String filePath = "data/testAlgorithmData" + iterations + ".csv";
+        String filePath = "Data/algorithmData" + iterations + ".csv";
 
-        AlgorithmData.setFilePath(filePath);
-        AlgorithmData.setNumberOfHeuristics(problem.getNumberOfHeuristics() - 1);
-        AlgorithmData.generateAlgorithms();
+        AlgorithmDataHyperHeuristic.setFilePath(filePath);
+        AlgorithmDataHyperHeuristic.setNumberOfHeuristics(problem.getNumberOfHeuristics() - 1);
+        AlgorithmDataHyperHeuristic.generateAlgorithms();
 
         /* file writer that creates new file and adds data headers */
         FileWriter fw = new FileWriter(filePath, true);
@@ -39,7 +39,7 @@ class RunAlgorithmData {
             /* inner loop, runs a problem "iterations" times */
             for (int j = 0; j < iterations; j++) {
                 problem = new BinPacking(problemSeed);
-                algorithm = new AlgorithmData(algorithmSeed, problemSeed,
+                algorithm = new AlgorithmDataHyperHeuristic(algorithmSeed, problemSeed,
                         problemInstance, j);
 
                 problem.loadInstance(problemInstance);
@@ -50,7 +50,6 @@ class RunAlgorithmData {
 
                 problemSeed++;
                 algorithmSeed++;
-                System.out.println(j);
             }
             problemInstance++;
         }

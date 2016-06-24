@@ -67,13 +67,13 @@ class EnsembleHyperHeuristic extends HyperHeuristic {
             if (noImprovement < ensemble.getAlgorithms().size() * 3) {
                 noImprovement = 0;
             } else {
-                output = ("" + iteration + "," + problemInstance + "," + problemSeed + "," + algorithmSeed + "," + startingFitness + "," + ensemble.getId() + "," + bestFitness + "," + runs + ",\"" + ensemble + "\"\n");
+                output = ("" + iteration + "," + problemInstance + "," + problemSeed + "," + algorithmSeed + "," + startingFitness + "," + ensemble.getID() + "," + bestFitness + "," + runs + ",\"" + ensemble + "\"\n");
                 try {
                     RunSpecificEnsembles.WriteData(output);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                System.out.printf("%snsemble %d, problem %d, iteration %d complete.\n", eliteTag, ensemble.getId(), problemInstance, this.iteration);
+                System.out.printf("%snsemble %d, problem %d, iteration %d complete.\n", eliteTag, ensemble.getID(), problemInstance, this.iteration);
                 return;
             }
 
