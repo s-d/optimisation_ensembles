@@ -3,12 +3,13 @@ package ensembles;
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 import BinPacking.BinPacking;
+import algorthims.RunAlgorithmData;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-class RunSpecificEnsembles {
+class RunDiverseHeuristics {
     private static FileWriter fw;
 
     static synchronized void WriteData(String string) throws IOException {
@@ -27,43 +28,58 @@ class RunSpecificEnsembles {
         HyperHeuristic hh;
         Ensemble ensemble = null;
         ProblemDomain problem = new BinPacking(0);
-        String fileType = "e";
+        String fileName = "e";
         String ensDirName = "Data/Ensembles";
         String eliteDirName = "Data/EliteEnsembles";
         String header = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
                 "iteration", "problem instance", "problem seed", "algorithm seed",
                 "starting fitness", "ensemble number", "fitness", "number of runs", "heuristics");
 
-        if (args != null) {
-            int argIndex = 0;
-            String arg;
+        if (args.length != 0) {
+            for (String arg : args) {
+                switch (arg) {
+                    case "-a":
+                    case "--algorithm":
+                        System.out.println("Algorithm Mode: Engaged.");
+                        RunAlgorithmData.main(null);
+                        System.exit(1);
 
-            while (argIndex < args.length) {
-                arg = args[argIndex++];
-
-                if (arg.equals("-e") || arg.equals("-E")) {
-                    eliteFlag = !eliteFlag;
-                    System.out.println("Elite Mode: Engaged");
-                } else {
-                    try {
-                        ensembleNumber = Integer.parseInt(arg);
-                    } catch (NumberFormatException e) {
-                        System.out.println("Illegal operation. Integer required");
+                    case "-h":
+                    case "--help":
+                        usage(false);
                         System.exit(0);
-                    }
+
+                    case "-e":
+                    case "--elite":
+                        if (args.length < 2) {
+                            usage(true);
+                            System.exit(1);
+                        }
+                        eliteFlag = true;
+                        fileName = "eliteE";
+                        System.out.println("Elite Mode: Engaged.");
+                        break;
+
+                    default:
+                        try {
+                            ensembleNumber = Integer.parseInt(arg);
+                        } catch (NumberFormatException e) {
+                            usage(true);
+                            System.exit(0);
+                        }
+                        break;
                 }
             }
-
         } else {
-            System.out.println("Illegal operation. Integer required");
+            usage(true);
             System.exit(0);
         }
 
         for (int i = 0; i < ensembleNumber + 1; i++) {
             if (eliteFlag) {
-                ensemble = Ensemble.generateEliteEnsemble();
+                ensemble = EnsembleFactory.generateEliteEnsemble();
             } else {
-                ensemble = Ensemble.generateEnsemble();
+                ensemble = EnsembleFactory.generateEnsemble();
             }
         }
 
@@ -85,7 +101,7 @@ class RunSpecificEnsembles {
         String saveDir = eliteFlag ? eliteDirName : ensDirName;
 
         assert ensemble != null;
-        String FILE_PATH = String.format("%s/%snsemble%dData%d.csv", saveDir, fileType, ensemble.getID(), System.nanoTime());
+        String FILE_PATH = String.format("%s/%snsemble%dData%d.csv", saveDir, fileName, ensemble.getID(), System.nanoTime());
         fw = new FileWriter(FILE_PATH, true);
 
         WriteData(header);
@@ -97,7 +113,7 @@ class RunSpecificEnsembles {
 
             for (int k = 0; k < iterations; k++) {
                 problem = new BinPacking(problemSeed);
-                hh = new EnsembleHyperHeuristic(ensemble, algorithmSeed, problemSeed, problemInstance, k, eliteFlag);
+                hh = new EnsembleExecutor(ensemble, algorithmSeed, problemSeed, problemInstance, k, eliteFlag);
 
                 problem.loadInstance(problemInstance);
 
@@ -111,6 +127,16 @@ class RunSpecificEnsembles {
             problemInstance++;
         }
         fw.close();
+    }
+
+    private static void usage(boolean illegal) {
+        if (illegal) {
+            System.out.println("Illegal usage.");
+        }
+        System.out.println("Usage:\r\n" +
+                "\tEnsemble ensemble [-e|--elite]\r\n" +
+                "\tensemble: The integer ID of the ensemble to be run.\r\n" +
+                "\t-e|--elite: Run elite version of the ensemble.");
     }
 
 }

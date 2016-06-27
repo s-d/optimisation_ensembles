@@ -7,7 +7,7 @@ import BinPacking.BinPacking;
 import java.io.FileWriter;
 import java.io.IOException;
 
-class RunAlgorithmData {
+public class RunAlgorithmData {
 
     public static void main(String[] args) throws IOException {
         long timeLimit;
@@ -39,8 +39,7 @@ class RunAlgorithmData {
             /* inner loop, runs a problem "iterations" times */
             for (int j = 0; j < iterations; j++) {
                 problem = new BinPacking(problemSeed);
-                algorithm = new AlgorithmDataHyperHeuristic(algorithmSeed, problemSeed,
-                        problemInstance, j);
+                algorithm = new AlgorithmDataHyperHeuristic(algorithmSeed, problemSeed, problemInstance, j);
 
                 problem.loadInstance(problemInstance);
 
@@ -54,5 +53,6 @@ class RunAlgorithmData {
             problemInstance++;
         }
     }
+
 
 }

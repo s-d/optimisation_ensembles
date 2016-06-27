@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Random;
 
 
-class HeuristicFactory {
+class AlgorithmFactory {
 
     private static final int NUMBER_OF_HEURISTICS = 7;
     private static ArrayList<Algorithm> algorithms;
@@ -43,7 +43,7 @@ class HeuristicFactory {
         if (algorithms == null) {
             generateAlgorithms();
         }
-        ArrayList<Algorithm> randomAlgorithms = (ArrayList<Algorithm>) algorithms.clone();
+        ArrayList<Algorithm> randomAlgorithms = new ArrayList<>(algorithms);
         Collections.shuffle(randomAlgorithms, rnd);
 
         return randomAlgorithms;

@@ -3,7 +3,7 @@ package ensembles;
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 
-class EnsembleHyperHeuristic extends HyperHeuristic {
+class EnsembleExecutor extends HyperHeuristic {
 
     private int iteration;
     private long algorithmSeed;
@@ -12,7 +12,7 @@ class EnsembleHyperHeuristic extends HyperHeuristic {
     private Ensemble ensemble;
     private String eliteTag = "E";
 
-    EnsembleHyperHeuristic(Ensemble ensemble, long algorithmSeed, long problemSeed, int problemInstance, int iteration, boolean eliteFlag) {
+    EnsembleExecutor(Ensemble ensemble, long algorithmSeed, long problemSeed, int problemInstance, int iteration, boolean eliteFlag) {
         super(algorithmSeed);
         this.ensemble = ensemble;
         this.algorithmSeed = algorithmSeed;
@@ -69,7 +69,7 @@ class EnsembleHyperHeuristic extends HyperHeuristic {
             } else {
                 output = ("" + iteration + "," + problemInstance + "," + problemSeed + "," + algorithmSeed + "," + startingFitness + "," + ensemble.getID() + "," + bestFitness + "," + runs + ",\"" + ensemble + "\"\n");
                 try {
-                    RunSpecificEnsembles.WriteData(output);
+                    RunDiverseHeuristics.WriteData(output);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
