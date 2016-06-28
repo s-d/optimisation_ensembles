@@ -1,27 +1,36 @@
-package ensembles;
+package solver;
 
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
+import heuristics.Algorithm;
+import heuristics.Ensemble;
 
-class Executor extends HyperHeuristic {
+class ExecuteHyperHeuristic extends HyperHeuristic {
 
     private int iteration;
     private int problemInstance;
     private long problemSeed;
     private long algorithmSeed;
     private Ensemble ensemble;
-    private String ensembleType = "Ensemble";
+    private String type = "Ensemble";
+    private boolean algorithmData = false;
 
-    Executor(Ensemble ensemble, long algorithmSeed, long problemSeed, int problemInstance, int iteration, boolean eliteFlag) {
+    ExecuteHyperHeuristic(Ensemble ensemble, long algorithmSeed, long problemSeed, int problemInstance, int iteration, String type, String flag) {
         super(algorithmSeed);
         this.ensemble = ensemble;
         this.algorithmSeed = algorithmSeed;
         this.problemSeed = problemSeed;
         this.problemInstance = problemInstance;
         this.iteration = iteration;
-        if (eliteFlag) {
-            ensembleType = "Elite ensemble";
+        if (flag.equals("--elite")) {
+            this.type = "Elite ensemble";
         }
+
+        if (type.equals("-a")) {
+            algorithmData = true;
+            this.type = "Algorithm";
+        }
+
     }
 
     @Override
@@ -67,16 +76,17 @@ class Executor extends HyperHeuristic {
             if (noImprovement < ensemble.getAlgorithms().size() * 3) {
                 noImprovement = 0;
             } else {
-                // "%d,%d,%d,%d,%f,%d,%f,%d,\"%s\" \r\n"
-                output = ("" + iteration + "," + problemInstance + "," + problemSeed + "," +
-                        algorithmSeed + "," + startingFitness + "," + ensemble.getID() + "," +
-                        bestFitness + "," + runs + ",\"" + ensemble + "\"\n");
+                String heu = (algorithmData) ? ((ensemble.getAlgorithms()).get(0)).toString() : (ensemble).toString();
+                output = String.format("%d,%d,%d,%d,%f,%d,%f,%d,\"%s\"\r\n",
+                        iteration, problemInstance, problemSeed, algorithmSeed,
+                        startingFitness, ensemble.getID(), bestFitness, runs, heu);
                 try {
-                    RunDiverseHeuristics.WriteData(output);
+                    RunDiverseHeuristics.writeData(output);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                System.out.printf("%s %d, problem %d, iteration %d complete.\n", ensembleType, ensemble.getID(), problemInstance, this.iteration);
+                System.out.printf("%s %d, problem %d, iteration %d complete.\n",
+                        type, ensemble.getID(), problemInstance, this.iteration);
                 return;
             }
         }   //while

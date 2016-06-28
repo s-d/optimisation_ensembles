@@ -1,19 +1,19 @@
-package ensembles;
+package heuristics;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-class Ensemble {
+public class Ensemble {
 
     private int id;
     private ArrayList<Algorithm> algorithms;
 
-    Ensemble(int id) {
+    public Ensemble(int id) {
         this.id = id;
         this.algorithms = new ArrayList<>();
     }
 
-    void appendAlgorithm(Algorithm alg) {
+    public void appendAlgorithm(Algorithm alg) {
         this.algorithms.add(alg);
     }
 
@@ -28,11 +28,11 @@ class Ensemble {
         return Arrays.toString(out);
     }
 
-    int getID() {
+    public int getID() {
         return id;
     }
 
-    ArrayList<Algorithm> getAlgorithms() {
+    public ArrayList<Algorithm> getAlgorithms() {
         return algorithms;
     }
 }

@@ -1,4 +1,6 @@
-package ensembles;
+package factories;
+
+import heuristics.Algorithm;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +11,7 @@ import java.util.Collections;
 import java.util.Random;
 
 
-class AlgorithmFactory {
+public class AlgorithmFactory {
 
     private static final int NUMBER_OF_HEURISTICS = 7;
     private static ArrayList<Algorithm> algorithms;
@@ -37,6 +39,13 @@ class AlgorithmFactory {
                 }
             }
         }
+    }
+
+    public static ArrayList<Algorithm> getAlgorithms() {
+        if (algorithms == null) {
+            generateAlgorithms();
+        }
+        return algorithms;
     }
 
     static ArrayList<Algorithm> getRandomAlgorithms() {

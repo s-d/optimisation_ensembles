@@ -1,13 +1,13 @@
-package ensembles;
+package heuristics;
 
 import java.util.Arrays;
 
-class Algorithm {
+public class Algorithm {
 
     private int id;
     private int[] heuristics;
 
-    Algorithm(int id, int[] heuristics) {
+    public Algorithm(int id, int[] heuristics) {
         this.id = id;
         this.heuristics = heuristics;
     }
@@ -16,7 +16,7 @@ class Algorithm {
         return id;
     }
 
-    int[] getHeuristics() {
+    public int[] getHeuristics() {
         return heuristics;
     }
 
