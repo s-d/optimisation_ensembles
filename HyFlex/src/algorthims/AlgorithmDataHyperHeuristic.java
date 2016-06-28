@@ -72,7 +72,6 @@ class AlgorithmDataHyperHeuristic extends HyperHeuristic {
      * @throws IOException if file cannot be found/opened
      */
     private void writeToFile(String data) throws IOException {
-        System.out.println("writing to file");
         FileWriter fw = new FileWriter(filePath, true);
         fw.append(data);
         fw.flush();

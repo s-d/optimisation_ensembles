@@ -3,16 +3,16 @@ package ensembles;
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
 
-class EnsembleExecutor extends HyperHeuristic {
+class Executor extends HyperHeuristic {
 
     private int iteration;
-    private long algorithmSeed;
     private int problemInstance;
     private long problemSeed;
+    private long algorithmSeed;
     private Ensemble ensemble;
-    private String eliteTag = "E";
+    private String ensembleType = "Ensemble";
 
-    EnsembleExecutor(Ensemble ensemble, long algorithmSeed, long problemSeed, int problemInstance, int iteration, boolean eliteFlag) {
+    Executor(Ensemble ensemble, long algorithmSeed, long problemSeed, int problemInstance, int iteration, boolean eliteFlag) {
         super(algorithmSeed);
         this.ensemble = ensemble;
         this.algorithmSeed = algorithmSeed;
@@ -20,7 +20,7 @@ class EnsembleExecutor extends HyperHeuristic {
         this.problemInstance = problemInstance;
         this.iteration = iteration;
         if (eliteFlag) {
-            eliteTag = "Elite e";
+            ensembleType = "Elite ensemble";
         }
     }
 
@@ -67,18 +67,19 @@ class EnsembleExecutor extends HyperHeuristic {
             if (noImprovement < ensemble.getAlgorithms().size() * 3) {
                 noImprovement = 0;
             } else {
-                output = ("" + iteration + "," + problemInstance + "," + problemSeed + "," + algorithmSeed + "," + startingFitness + "," + ensemble.getID() + "," + bestFitness + "," + runs + ",\"" + ensemble + "\"\n");
+                // "%d,%d,%d,%d,%f,%d,%f,%d,\"%s\" \r\n"
+                output = ("" + iteration + "," + problemInstance + "," + problemSeed + "," +
+                        algorithmSeed + "," + startingFitness + "," + ensemble.getID() + "," +
+                        bestFitness + "," + runs + ",\"" + ensemble + "\"\n");
                 try {
                     RunDiverseHeuristics.WriteData(output);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                System.out.printf("%snsemble %d, problem %d, iteration %d complete.\n", eliteTag, ensemble.getID(), problemInstance, this.iteration);
+                System.out.printf("%s %d, problem %d, iteration %d complete.\n", ensembleType, ensemble.getID(), problemInstance, this.iteration);
                 return;
             }
-
         }   //while
-
     }   //method
 
     @Override
