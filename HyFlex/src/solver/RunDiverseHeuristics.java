@@ -18,11 +18,7 @@ class RunDiverseHeuristics {
     private static String type;
     private static String flag;
     private static FileWriter fw;
-    private static long timeLimit;
     private static int iterations;
-    private static int problemSeed;
-    private static int algorithmSeed;
-    private static HyperHeuristic hh;
     private static Ensemble ensemble;
     private static int ensembleNumber;
     private static int problemInstance;
@@ -48,12 +44,16 @@ class RunDiverseHeuristics {
         if (!type.equals("-a")) {
             headerToken = "algorithms";
             for (int i = 0; i < ensembleNumber + 1; i++) {
-                if (flag.equals("--elite")) {
-                    ensemble = EnsembleFactory.generateEliteEnsemble();
-                } else if (flag.equals("--random")) {
-                    ensemble = EnsembleFactory.generateRandomEnsemble();
-                } else {
-                    ensemble = EnsembleFactory.generateEnsemble();
+                switch (flag) {
+                    case "--elite":
+                        ensemble = EnsembleFactory.generateEliteEnsemble();
+                        break;
+                    case "--random":
+                        ensemble = EnsembleFactory.generateRandomEnsemble();
+                        break;
+                    default:
+                        ensemble = EnsembleFactory.generateEnsemble();
+                        break;
                 }
             }
         }
@@ -65,7 +65,6 @@ class RunDiverseHeuristics {
 
         writeData(header);
 
-
         if (type.equals("-a")) {
             collectAlgorithmData();
         } else {
@@ -76,6 +75,11 @@ class RunDiverseHeuristics {
 
     private static void collectEnsembleData(Ensemble ensemble) {
         problemInstance = 0;
+        HyperHeuristic hh;
+        int problemSeed;
+        int algorithmSeed;
+        long timeLimit;
+
         for (int i = 0; i < problem.getNumberOfInstances(); i++) {
             problemSeed = 1000;
             algorithmSeed = 1000;
@@ -161,7 +165,6 @@ class RunDiverseHeuristics {
                     case "--help":
                         printUsage(false);
                         System.exit(0);
-
                     case "-a":
                         type = arg;
                         if (args.length < 2) {
@@ -181,7 +184,6 @@ class RunDiverseHeuristics {
                             }
                         }
                         break;
-
                     case "-e":
                         type = arg;
                         if (args.length < 2) {
@@ -201,7 +203,6 @@ class RunDiverseHeuristics {
                             }
                         }
                         break;
-
                     case "--elite":
                         flag = arg;
                         break;
@@ -216,6 +217,7 @@ class RunDiverseHeuristics {
         }
         if (type.equals("")) {
             printUsage(true);
+            System.exit(1);
         }
     }
 
@@ -224,13 +226,14 @@ class RunDiverseHeuristics {
             System.out.println("Unexpected number of arguments.");
         }
         System.out.println("Usage:\r\n" +
-                "\tDiverseHeuristics  -e ensembleNo [--elite|--random] | -a iterations\r\n" +
-                "\t-e: Test an ensemble\r\n" +
-                "\tensembleNo: The integer ID of the ensemble to be tested.\r\n" +
-                "\t--elite: Test elite version of the ensemble.\r\n" +
-                "\t--random: Test a randomly generated ensemble.\r\n"+
-                "\t-a: Test individual algorithms.\r\n" +
-                "\titerations: The number of times to test each algorithm.");
+                "\tDiverseHeuristics -e <ensembleID> [--elite|--random]\r\n" +
+                "\tDiverseHeuristics -a <iterations>\r\n\r\n" +
+                "\t-e:              Test a single ensemble on all problems\r\n" +
+                "\t<ensembleID>:    The ID of the ensemble to be tested.\r\n" +
+                "\t--elite:         Test elite version of the ensemble.\r\n" +
+                "\t--random:        Test a randomly generated ensemble.\r\n\r\n" +
+                "\t-a:              Test all algorithms on all problems.\r\n" +
+                "\t<iterations>:    The number of times to test each algorithm.");
     }
 
 }
