@@ -34,26 +34,24 @@ class RunDiverseHeuristics {
     }
 
     public static void main(String args[]) throws IOException {
+        String headerToken = "heuristics";
         ensemble = null;
         type = "";
         flag = "";
         ensembleNumber = 0;
         iterations = 50;
-
         problemInstance = 0;
         problem = new BinPacking(0);
-
-        //// TODO: 28/06/2016 rewrite header
-        String header = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
-                "iteration", "problem instance", "problem seed", "algorithm seed",
-                "starting fitness", "ensemble number", "fitness", "number of runs", "heuristics");
 
         parseArguments(args);
 
         if (!type.equals("-a")) {
+            headerToken = "algorithms";
             for (int i = 0; i < ensembleNumber + 1; i++) {
                 if (flag.equals("--elite")) {
                     ensemble = EnsembleFactory.generateEliteEnsemble();
+                } else if (flag.equals("--random")) {
+                    ensemble = EnsembleFactory.generateRandomEnsemble();
                 } else {
                     ensemble = EnsembleFactory.generateEnsemble();
                 }
@@ -61,7 +59,12 @@ class RunDiverseHeuristics {
         }
         createDataLocation();
 
+        String header = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
+                "iteration", "problem instance", "problem seed", "algorithm seed",
+                "starting fitness", "ensemble number", "fitness", "number of runs", headerToken);
+
         writeData(header);
+
 
         if (type.equals("-a")) {
             collectAlgorithmData();
@@ -112,17 +115,24 @@ class RunDiverseHeuristics {
         String ensDirName = "Data/Ensembles";
         String algDirName = "Data/Algorithms";
         String eliDirName = "Data/EliteEnsembles";
+        String ranDirName = "Data/RandomEnsembles";
 
         switch (type) {
             case "-e":
-                if (flag.equals("")) {
-                    dataDir = new File(ensDirName);
-                } else {
-                    fileName = "eliteEnsemble";
-                    dataDir = new File(eliDirName);
+                switch (flag) {
+                    case "--elite":
+                        fileName = "eliteEnsemble";
+                        dataDir = new File(eliDirName);
+                        break;
+                    case "--random":
+                        fileName = "randomEnsemble";
+                        dataDir = new File(ranDirName);
+                        break;
+                    default:
+                        dataDir = new File(ensDirName);
+                        break;
                 }
                 break;
-
             case "-a":
                 fileName = "algorithm";
                 dataDir = new File(algDirName);
@@ -195,6 +205,9 @@ class RunDiverseHeuristics {
                     case "--elite":
                         flag = arg;
                         break;
+                    case "--random":
+                        flag = arg;
+                        break;
                 }
             }
         } else {
@@ -211,10 +224,11 @@ class RunDiverseHeuristics {
             System.out.println("Unexpected number of arguments.");
         }
         System.out.println("Usage:\r\n" +
-                "\tDiverseHeuristics  -e ensembleNo [--elite] | -a iterations\r\n" +
+                "\tDiverseHeuristics  -e ensembleNo [--elite|--random] | -a iterations\r\n" +
                 "\t-e: Test an ensemble\r\n" +
                 "\tensembleNo: The integer ID of the ensemble to be tested.\r\n" +
                 "\t--elite: Test elite version of the ensemble.\r\n" +
+                "\t--random: Test a randomly generated ensemble.\r\n"+
                 "\t-a: Test individual algorithms.\r\n" +
                 "\titerations: The number of times to test each algorithm.");
     }

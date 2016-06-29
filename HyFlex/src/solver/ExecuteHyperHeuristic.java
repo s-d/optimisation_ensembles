@@ -24,6 +24,8 @@ class ExecuteHyperHeuristic extends HyperHeuristic {
         this.iteration = iteration;
         if (flag.equals("--elite")) {
             this.type = "Elite ensemble";
+        } else if (flag.equals("--random")) {
+            this.type = "Random ensemble";
         }
 
         if (type.equals("-a")) {
