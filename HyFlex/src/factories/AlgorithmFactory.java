@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-
 public class AlgorithmFactory {
 
     private static final int NUMBER_OF_HEURISTICS = 7;

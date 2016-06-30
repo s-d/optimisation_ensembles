@@ -21,6 +21,7 @@ public class Ensemble {
     public String toString() {
         int out[] = new int[this.algorithms.size()];
         int index = 0;
+
         for (Algorithm alg : algorithms) {
             out[index] = alg.getId();
             index++;
@@ -35,4 +36,5 @@ public class Ensemble {
     public ArrayList<Algorithm> getAlgorithms() {
         return algorithms;
     }
+
 }

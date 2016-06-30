@@ -22,6 +22,7 @@ class ExecuteHyperHeuristic extends HyperHeuristic {
         this.problemSeed = problemSeed;
         this.problemInstance = problemInstance;
         this.iteration = iteration;
+
         if (flag.equals("--elite")) {
             this.type = "Elite ensemble";
         } else if (flag.equals("--random")) {
@@ -98,4 +99,5 @@ class ExecuteHyperHeuristic extends HyperHeuristic {
     public String toString() {
         return null;
     }
+
 }
