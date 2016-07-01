@@ -57,7 +57,11 @@ class RunDiverseHeuristics {
                 }
             }
         }
+
         createDataLocation();
+
+        String fullName = type.equals("-e") ? "ensemble" : "algorithm";
+        System.out.printf("Starting %s data collection.\r\n", fullName);
 
         String header = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
                 "iteration", "problem instance", "problem seed", "algorithm seed",
@@ -83,7 +87,7 @@ class RunDiverseHeuristics {
         for (int i = 0; i < problem.getNumberOfInstances(); i++) {
             problemSeed = 1000;
             algorithmSeed = 1000;
-            timeLimit = 1000 * 60 * 10;
+            timeLimit = 1000 * 60 * 15;
 
             for (int j = 0; j < iterations; j++) {
                 problem = new BinPacking(problemSeed);
@@ -177,8 +181,8 @@ class RunDiverseHeuristics {
                                 printUsage(false);
                                 System.exit(1);
                             }
-                            if (iterations < 0) {
-                                System.out.println("iterations must be positive.");
+                            if (iterations < 1) {
+                                System.out.println("<iterations> must be greater than one.");
                                 printUsage(false);
                                 System.exit(1);
                             }
