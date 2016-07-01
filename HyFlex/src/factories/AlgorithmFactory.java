@@ -81,7 +81,6 @@ public class AlgorithmFactory {
                 eliteAlgorithms.add(algorithms.get(algIndex));
             }
         }
-
         return eliteAlgorithms;
     }
 

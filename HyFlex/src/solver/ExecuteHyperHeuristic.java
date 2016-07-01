@@ -11,11 +11,13 @@ class ExecuteHyperHeuristic extends HyperHeuristic {
     private int problemInstance;
     private long problemSeed;
     private long algorithmSeed;
+    private boolean algorithmData = false;
     private Ensemble ensemble;
     private String type = "Ensemble";
-    private boolean algorithmData = false;
 
-    ExecuteHyperHeuristic(Ensemble ensemble, long algorithmSeed, long problemSeed, int problemInstance, int iteration, String type, String flag) {
+    /* constructor */
+    ExecuteHyperHeuristic(Ensemble ensemble, long algorithmSeed, long problemSeed,
+                          int problemInstance, int iteration, String type, String flag) {
         super(algorithmSeed);
         this.ensemble = ensemble;
         this.algorithmSeed = algorithmSeed;
@@ -23,30 +25,30 @@ class ExecuteHyperHeuristic extends HyperHeuristic {
         this.problemInstance = problemInstance;
         this.iteration = iteration;
 
-        if (flag.equals("--elite")) {
+        if (type.equals("-a")) {
+            algorithmData = true;
+            this.type = "Algorithm";
+        } else if (flag.equals("--elite")) {
             this.type = "Elite ensemble";
         } else if (flag.equals("--random")) {
             this.type = "Random ensemble";
         }
 
-        if (type.equals("-a")) {
-            algorithmData = true;
-            this.type = "Algorithm";
-        }
-
     }
 
+    /* solves problem using given ensemble */
     @Override
     protected void solve(ProblemDomain problemDomain) {
-        String output;
         int runs = 0;
         int noImprovement = 0;
-        double startingFitness;
-        double currentFitness;
-        double bestFitness;
-        double newFitness;
         double delta;
+        double newFitness;
+        double bestFitness;
+        double currentFitness;
+        double startingFitness;
+        String output;
 
+        /* set up problem parameters */
         problemDomain.setMemorySize(3);
         problemDomain.initialiseSolution(0);
         problemDomain.copySolution(0, 1);
@@ -59,9 +61,11 @@ class ExecuteHyperHeuristic extends HyperHeuristic {
             for (Algorithm currentAlg : ensemble.getAlgorithms()) {
                 for (int currentHeuristic : currentAlg.getHeuristics()) {
 
+                    /* apply heuristic to problem */
                     newFitness = problemDomain.applyHeuristic(currentHeuristic, 1, 2);
                     bestFitness = (newFitness < bestFitness) ? newFitness : bestFitness;
 
+                    /* determine if new fitness is better */
                     delta = currentFitness - newFitness;
 
                     if (delta > 0) {
@@ -79,6 +83,7 @@ class ExecuteHyperHeuristic extends HyperHeuristic {
             if (noImprovement < ensemble.getAlgorithms().size() * 3) {
                 noImprovement = 0;
             } else {
+                /* output data to file */
                 String heu = (algorithmData) ? ((ensemble.getAlgorithms()).get(0)).toString() : (ensemble).toString();
                 output = String.format("%d,%d,%d,%d,%f,%d,%f,%d,\"%s\"\r\n",
                         iteration, problemInstance, problemSeed, algorithmSeed,
@@ -92,8 +97,8 @@ class ExecuteHyperHeuristic extends HyperHeuristic {
                         type, ensemble.getID(), problemInstance, this.iteration);
                 return;
             }
-        }   //while
-    }   //method
+        }
+    }
 
     @Override
     public String toString() {

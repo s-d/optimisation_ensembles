@@ -12,37 +12,25 @@ public class EnsembleFactory {
 
     public static Ensemble generateEnsemble() {
         ArrayList<Algorithm> orderedAlgorithms = AlgorithmFactory.getAlgorithms();
-        Ensemble ensemble = new Ensemble(index - 1);
-
-        for (int i = 0; i < index * 5; i++) {
-            if (i < orderedAlgorithms.size()) {
-                ensemble.appendAlgorithm(orderedAlgorithms.get(i));
-            }
-        }
-        index++;
-        return ensemble;
+        return generate(orderedAlgorithms);
     }
 
     public static Ensemble generateRandomEnsemble() {
         ArrayList<Algorithm> randomAlgorithms = AlgorithmFactory.getRandomAlgorithms();
-        Ensemble ensemble = new Ensemble(index - 1);
-
-        for (int i = 0; i < index * 5; i++) {
-            if (i < randomAlgorithms.size()) {
-                ensemble.appendAlgorithm(randomAlgorithms.get(i));
-            }
-        }
-        index++;
-        return ensemble;
+        return generate(randomAlgorithms);
     }
 
     public static Ensemble generateEliteEnsemble() throws IOException {
         ArrayList<Algorithm> eliteAlgorithms = AlgorithmFactory.getEliteAlgorithms();
-        Ensemble ensemble = new Ensemble(index - 1);
 
+        return generate(eliteAlgorithms);
+    }
+
+    private static Ensemble generate(ArrayList<Algorithm> algorithms) {
+        Ensemble ensemble = new Ensemble(index - 1);
         for (int i = 0; i < index * 5; i++) {
-            if (i < eliteAlgorithms.size()) {
-                ensemble.appendAlgorithm(eliteAlgorithms.get(i));
+            if (i < algorithms.size()) {
+                ensemble.appendAlgorithm(algorithms.get(i));
             }
         }
         index++;
