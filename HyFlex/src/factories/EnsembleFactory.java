@@ -10,22 +10,26 @@ public class EnsembleFactory {
 
     private static int index = 1;
 
+    /* return an ensemble from ordered algorithms */
     public static Ensemble generateEnsemble() {
         ArrayList<Algorithm> orderedAlgorithms = AlgorithmFactory.getAlgorithms();
         return generate(orderedAlgorithms);
     }
 
+    /* return an ensemble comprised of random algorithms */
     public static Ensemble generateRandomEnsemble() {
         ArrayList<Algorithm> randomAlgorithms = AlgorithmFactory.getRandomAlgorithms();
         return generate(randomAlgorithms);
     }
 
+    /* return an ensemble comprised of elite algorithms */
     public static Ensemble generateEliteEnsemble() throws IOException {
         ArrayList<Algorithm> eliteAlgorithms = AlgorithmFactory.getEliteAlgorithms();
 
         return generate(eliteAlgorithms);
     }
 
+    /* base generation method */
     private static Ensemble generate(ArrayList<Algorithm> algorithms) {
         Ensemble ensemble = new Ensemble(index - 1);
         for (int i = 0; i < index * 5; i++) {

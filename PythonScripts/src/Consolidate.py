@@ -54,4 +54,4 @@ for excelFileName in os.listdir(os.getcwd()):
 
     rowCount += 1
 # save workbook
-conWb.save(filename='ensembleConsolidation.xlsx')
+conWb.save(filename='consolidatedData.xlsx')

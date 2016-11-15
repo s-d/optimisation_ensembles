@@ -17,12 +17,13 @@ public class AlgorithmFactory {
     private static ArrayList<Algorithm> eliteAlgorithms;
     private static Random rnd;
 
+    /* produces an array of all permutations of algorithms */
     private static void generateAlgorithms() {
-        algorithms = new ArrayList<>();
+        int index = 0;
+        int heuristics[];
         Algorithm algorithm;
         rnd = new Random();
-        int heuristics[];
-        int index = 0;
+        algorithms = new ArrayList<>();
 
         for (int i = 0; i < NUMBER_OF_HEURISTICS; i++) {
             for (int j = 0; j < NUMBER_OF_HEURISTICS; j++) {
@@ -40,6 +41,7 @@ public class AlgorithmFactory {
         }
     }
 
+    /* return algorithms */
     public static ArrayList<Algorithm> getAlgorithms() {
         if (algorithms == null) {
             generateAlgorithms();
@@ -47,6 +49,7 @@ public class AlgorithmFactory {
         return algorithms;
     }
 
+    /* returns algorithms in random order */
     static ArrayList<Algorithm> getRandomAlgorithms() {
         if (algorithms == null) {
             generateAlgorithms();
@@ -57,6 +60,7 @@ public class AlgorithmFactory {
         return randomAlgorithms;
     }
 
+    /* returns algorithms ordered by fitness */
     static ArrayList<Algorithm> getEliteAlgorithms() throws IOException {
         if (algorithms == null) {
             generateAlgorithms();
@@ -68,8 +72,8 @@ public class AlgorithmFactory {
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(isr);
 
-            int[] algOrder = new int[343];
             int counter = 0;
+            int[] algOrder = new int[343];
             String line;
 
             while ((line = br.readLine()) != null) {
