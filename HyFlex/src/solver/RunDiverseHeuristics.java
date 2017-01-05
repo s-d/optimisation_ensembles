@@ -174,7 +174,7 @@ class RunDiverseHeuristics {
             System.out.printf("%s data directory created.\n", dataDir.getName());
         }
         int fileNum = (!type.equals("-a") ? ensemble.getID() : iterations);
-        String FILE_PATH = String.format("%s/%s%dSATData%d.csv",
+        String FILE_PATH = String.format("%s/%s%dData%d.csv",
                 dataDir.getPath(), testType, fileNum, System.nanoTime());
         fw = new FileWriter(FILE_PATH, true);
     }

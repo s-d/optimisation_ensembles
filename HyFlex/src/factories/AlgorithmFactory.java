@@ -108,9 +108,9 @@ public class AlgorithmFactory {
         HEURISTICS_NUMBERS = new ArrayList<>();
 
         ArrayList<ProblemDomain.HeuristicType> heuristicTypes = new ArrayList<>();
-        heuristicTypes.add(ProblemDomain.HeuristicType.LOCAL_SEARCH);
-        heuristicTypes.add(ProblemDomain.HeuristicType.RUIN_RECREATE);
         heuristicTypes.add(ProblemDomain.HeuristicType.MUTATION);
+        heuristicTypes.add(ProblemDomain.HeuristicType.RUIN_RECREATE);
+        heuristicTypes.add(ProblemDomain.HeuristicType.LOCAL_SEARCH);
 
         for (ProblemDomain.HeuristicType h: heuristicTypes) {
             for (int i : prob.getHeuristicsOfType(h)) {
