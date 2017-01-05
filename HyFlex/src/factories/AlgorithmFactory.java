@@ -1,5 +1,6 @@
 package factories;
 
+import AbstractClasses.ProblemDomain;
 import heuristics.Algorithm;
 
 import java.io.BufferedReader;
@@ -12,7 +13,7 @@ import java.util.Random;
 
 public class AlgorithmFactory {
 
-    private static final int NUMBER_OF_HEURISTICS = 7;
+    private static ArrayList<Integer> HEURISTICS_NUMBERS;
     private static ArrayList<Algorithm> algorithms;
     private static ArrayList<Algorithm> eliteAlgorithms;
     private static Random rnd;
@@ -25,9 +26,10 @@ public class AlgorithmFactory {
         rnd = new Random();
         algorithms = new ArrayList<>();
 
-        for (int i = 0; i < NUMBER_OF_HEURISTICS; i++) {
-            for (int j = 0; j < NUMBER_OF_HEURISTICS; j++) {
-                for (int k = 0; k < NUMBER_OF_HEURISTICS; k++) {
+        for (int i : HEURISTICS_NUMBERS) {
+            for (int j: HEURISTICS_NUMBERS) {
+                for (int k: HEURISTICS_NUMBERS) {
+
                     heuristics = new int[3];
                     heuristics[0] = i;
                     heuristics[1] = j;
@@ -35,10 +37,24 @@ public class AlgorithmFactory {
 
                     algorithm = new Algorithm(index, heuristics);
                     algorithms.add(algorithm);
-                    index++;
                 }
             }
         }
+
+//        for (int i = 0; i < NUMBER_OF_HEURISTICS; i++) {
+//            for (int j = 0; j < NUMBER_OF_HEURISTICS; j++) {
+//                for (int k = 0; k < NUMBER_OF_HEURISTICS; k++) {
+//                    heuristics = new int[3];
+//                    heuristics[0] = i;
+//                    heuristics[1] = j;
+//                    heuristics[2] = k;
+//
+//                    algorithm = new Algorithm(index, heuristics);
+//                    algorithms.add(algorithm);
+//                    index++;
+//                }
+//            }
+//        }
     }
 
     /* return algorithms */
@@ -86,6 +102,21 @@ public class AlgorithmFactory {
             }
         }
         return eliteAlgorithms;
+    }
+
+   public static void setProblemHeuristics(ProblemDomain prob){
+        HEURISTICS_NUMBERS = new ArrayList<>();
+
+        ArrayList<ProblemDomain.HeuristicType> heuristicTypes = new ArrayList<>();
+        heuristicTypes.add(ProblemDomain.HeuristicType.LOCAL_SEARCH);
+        heuristicTypes.add(ProblemDomain.HeuristicType.RUIN_RECREATE);
+        heuristicTypes.add(ProblemDomain.HeuristicType.MUTATION);
+
+        for (ProblemDomain.HeuristicType h: heuristicTypes) {
+            for (int i : prob.getHeuristicsOfType(h)) {
+                HEURISTICS_NUMBERS.add(i);
+            }
+        }
     }
 
 }

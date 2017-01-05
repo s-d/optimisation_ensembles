@@ -2,7 +2,7 @@ package solver;
 
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
-import BinPacking.BinPacking;
+import SAT.SAT;
 import factories.AlgorithmFactory;
 import factories.EnsembleFactory;
 import heuristics.Algorithm;
@@ -37,7 +37,8 @@ class RunDiverseHeuristics {
         iterations = 50;
         ensembleNumber = 0;
         problemInstance = 0;
-        problem = new BinPacking(0);
+        problem = new SAT(0);
+        AlgorithmFactory.setProblemHeuristics(problem);
         String headerToken = "heuristics";
 
         parseArguments(args);
@@ -103,7 +104,7 @@ class RunDiverseHeuristics {
             /* for number of iterations (50) */
             for (int j = 0; j < iterations; j++) {
                 /* initialize new problem and solver and run */
-                problem = new BinPacking(problemSeed);
+                problem = new SAT(problemSeed);
                 hh = new ExecuteHyperHeuristic(ensemble, algorithmSeed, problemSeed, problemInstance, j, type, flag);
 
                 problem.loadInstance(problemInstance);
@@ -173,7 +174,7 @@ class RunDiverseHeuristics {
             System.out.printf("%s data directory created.\n", dataDir.getName());
         }
         int fileNum = (!type.equals("-a") ? ensemble.getID() : iterations);
-        String FILE_PATH = String.format("%s/%s%dData%d.csv",
+        String FILE_PATH = String.format("%s/%s%dSATData%d.csv",
                 dataDir.getPath(), testType, fileNum, System.nanoTime());
         fw = new FileWriter(FILE_PATH, true);
     }
