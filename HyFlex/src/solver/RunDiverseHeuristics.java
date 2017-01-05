@@ -178,7 +178,7 @@ class RunDiverseHeuristics {
         fw = new FileWriter(FILE_PATH, true);
     }
 
-    /* determin test from commandline arguments */
+    /* determine test from commandline arguments */
     private static void parseArguments(String[] args) throws IOException {
         if (args.length > 0) {
             for (int i = 0; i < args.length; i++) {
