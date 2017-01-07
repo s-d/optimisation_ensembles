@@ -2,6 +2,9 @@ package solver;
 
 import AbstractClasses.HyperHeuristic;
 import AbstractClasses.ProblemDomain;
+import BinPacking.BinPacking;
+import FlowShop.FlowShop;
+import PersonnelScheduling.PersonnelScheduling;
 import SAT.SAT;
 import factories.AlgorithmFactory;
 import factories.EnsembleFactory;
@@ -23,6 +26,8 @@ class RunDiverseHeuristics {
     private static FileWriter fw;
     private static Ensemble ensemble;
     private static ProblemDomain problem;
+    private static String problemType;
+
 
     /* writes data to output file */
     static synchronized void writeData(String string) throws IOException {
@@ -37,11 +42,10 @@ class RunDiverseHeuristics {
         iterations = 50;
         ensembleNumber = 0;
         problemInstance = 0;
-        problem = new SAT(0);
-        AlgorithmFactory.setProblemHeuristics(problem);
         String headerToken = "heuristics";
 
         parseArguments(args);
+        AlgorithmFactory.setProblemHeuristics(problem);
 
         /* if not testing algorithms */
         if (!type.equals("-a")) {
@@ -104,7 +108,20 @@ class RunDiverseHeuristics {
             /* for number of iterations (50) */
             for (int j = 0; j < iterations; j++) {
                 /* initialize new problem and solver and run */
-                problem = new SAT(problemSeed);
+                switch (problemType) {
+                    case "bin":
+                        problem = new BinPacking(problemSeed);
+                        break;
+                    case "sat":
+                        problem = new SAT(problemSeed);
+                        break;
+                    case "flo":
+                        problem = new FlowShop(problemSeed);
+                        break;
+                    case "per":
+                        problem = new PersonnelScheduling(problemSeed);
+                        break;
+                }
                 hh = new ExecuteHyperHeuristic(ensemble, algorithmSeed, problemSeed, problemInstance, j, type, flag);
 
                 problem.loadInstance(problemInstance);
@@ -124,7 +141,8 @@ class RunDiverseHeuristics {
     /* algorithm data collection */
     private static void collectAlgorithmData() {
         ArrayList<Algorithm> algorithms = AlgorithmFactory.getAlgorithms();
-
+        System.out.println(problem.toString());
+        System.out.println(algorithms.size());
         /* generate and test ensembles of single algorithms */
         for (int i = 0; i < algorithms.size(); i++) {
             ensemble = new Ensemble(i);
@@ -161,7 +179,7 @@ class RunDiverseHeuristics {
                 }
                 break;
             case "-a":
-                testType = "algorithm";
+                testType = problemType + "Algorithm";
                 dataDir = new File(algDirName);
                 break;
         }
@@ -191,12 +209,31 @@ class RunDiverseHeuristics {
                         System.exit(0);
                     case "-a":
                         type = arg;
-                        if (args.length < 2) {
+                        if (args.length < 3) {
                             printUsage(true);
                             System.exit(1);
                         } else {
+                            String probType = args[i + 1];
+                            switch (probType) {
+                                case "bin":
+                                    problemType = probType;
+                                    problem = new BinPacking(0);
+                                    break;
+                                case "sat":
+                                    problemType = probType;
+                                    problem = new SAT(0);
+                                    break;
+                                case "flo":
+                                    problemType = probType;
+                                    problem = new FlowShop(0);
+                                    break;
+                                case "per":
+                                    problemType = probType;
+                                    problem = new PersonnelScheduling(0);
+                                    break;
+                            }
                             try {
-                                iterations = Integer.parseInt(args[i + 1]);
+                                iterations = Integer.parseInt(args[i + 2]);
                             } catch (NumberFormatException e) {
                                 printUsage(false);
                                 System.exit(1);
@@ -259,6 +296,8 @@ class RunDiverseHeuristics {
                 "\t--random:        Test a randomly generated ensemble.\r\n\r\n" +
                 "\t-a:              Test all algorithms on all problems.\r\n" +
                 "\t<iterations>:    The number of times to test each algorithm.");
+
+        // Bin SAT Flo Per
     }
 
 }
