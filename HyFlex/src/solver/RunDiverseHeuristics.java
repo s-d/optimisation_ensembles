@@ -27,6 +27,8 @@ class RunDiverseHeuristics {
     private static Ensemble ensemble;
     private static ProblemDomain problem;
     private static String problemType;
+    private static int iteratorStart;
+    private static int iteratorEnd;
 
 
     /* writes data to output file */
@@ -42,6 +44,7 @@ class RunDiverseHeuristics {
         iterations = 50;
         ensembleNumber = 0;
         problemInstance = 0;
+        iteratorStart = -1;
         String headerToken = "heuristics";
 
         parseArguments(args);
@@ -143,8 +146,9 @@ class RunDiverseHeuristics {
         ArrayList<Algorithm> algorithms = AlgorithmFactory.getAlgorithms();
         System.out.println(problem.toString());
         System.out.println(algorithms.size());
+        int iteratorBegin = (iteratorStart > -1) ? iteratorStart: 0;
         /* generate and test ensembles of single algorithms */
-        for (int i = 0; i < algorithms.size(); i++) {
+        for (int i = iteratorBegin; i < algorithms.size(); i++) {
             ensemble = new Ensemble(i);
             ensemble.appendAlgorithm(algorithms.get(i));
 
@@ -262,6 +266,34 @@ class RunDiverseHeuristics {
                                 printUsage(false);
                                 System.exit(1);
                             }
+                        }
+                        break;
+
+                    case "--start":
+                        try {
+                            iteratorStart = Integer.parseInt(args[i + 1]);
+                        } catch (NumberFormatException e) {
+                            printUsage(false);
+                            System.exit(1);
+                        }
+                        if (iteratorStart< 0) {
+                            System.out.println("ensembleNo must be positive.");
+                            printUsage(false);
+                            System.exit(1);
+                        }
+                        break;
+
+                    case "--end":
+                        try {
+                            iteratorEnd = Integer.parseInt(args[i + 1]);
+                        } catch (NumberFormatException e) {
+                            printUsage(false);
+                            System.exit(1);
+                        }
+                        if (iteratorEnd< 0) {
+                            System.out.println("ensembleNo must be positive.");
+                            printUsage(false);
+                            System.exit(1);
                         }
                         break;
                     case "--elite":
