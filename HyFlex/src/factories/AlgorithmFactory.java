@@ -117,6 +117,8 @@ public class AlgorithmFactory {
                 HEURISTICS_NUMBERS.add(i);
             }
         }
+        Collections.sort(HEURISTICS_NUMBERS);
+       System.out.println(HEURISTICS_NUMBERS);
     }
 
 }
