@@ -146,9 +146,10 @@ class RunDiverseHeuristics {
         ArrayList<Algorithm> algorithms = AlgorithmFactory.getAlgorithms();
         System.out.println(problem.toString());
         System.out.println(algorithms.size());
-        int iteratorBegin = (iteratorStart > -1) ? iteratorStart: 0;
+        int iteratorBegin = (iteratorStart > -1) ? iteratorStart : 0;
+        int iteratorFinish = (iteratorEnd > -1) ? iteratorEnd : algorithms.size();
         /* generate and test ensembles of single algorithms */
-        for (int i = iteratorBegin; i < algorithms.size(); i++) {
+        for (int i = iteratorBegin; i < iteratorFinish; i++) {
             ensemble = new Ensemble(i);
             ensemble.appendAlgorithm(algorithms.get(i));
 
@@ -276,7 +277,7 @@ class RunDiverseHeuristics {
                             printUsage(false);
                             System.exit(1);
                         }
-                        if (iteratorStart< 0) {
+                        if (iteratorStart < 0) {
                             System.out.println("ensembleNo must be positive.");
                             printUsage(false);
                             System.exit(1);
@@ -290,7 +291,7 @@ class RunDiverseHeuristics {
                             printUsage(false);
                             System.exit(1);
                         }
-                        if (iteratorEnd< 0) {
+                        if (iteratorEnd < 0) {
                             System.out.println("ensembleNo must be positive.");
                             printUsage(false);
                             System.exit(1);
