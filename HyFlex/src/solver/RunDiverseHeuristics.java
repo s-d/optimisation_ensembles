@@ -45,6 +45,7 @@ class RunDiverseHeuristics {
         ensembleNumber = 0;
         problemInstance = 0;
         iteratorStart = -1;
+        iteratorEnd = -1;
         String headerToken = "heuristics";
 
         parseArguments(args);
