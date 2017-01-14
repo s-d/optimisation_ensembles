@@ -37,6 +37,7 @@ public class AlgorithmFactory {
 
                     algorithm = new Algorithm(index, heuristics);
                     algorithms.add(algorithm);
+                    ++index;
                 }
             }
         }
