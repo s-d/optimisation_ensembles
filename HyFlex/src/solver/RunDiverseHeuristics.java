@@ -103,6 +103,8 @@ class RunDiverseHeuristics {
         HyperHeuristic hh;
         problemInstance = 0;
 
+        System.out.println(ensemble);
+
         /* for every problem instance */
         for (int i = 0; i < problem.getNumberOfInstances(); i++) {
             problemSeed = 1000;
@@ -253,12 +255,31 @@ class RunDiverseHeuristics {
                         break;
                     case "-e":
                         type = arg;
-                        if (args.length < 2) {
+                        if (args.length < 3) {
                             printUsage(true);
                             System.exit(1);
                         } else {
+                            String probType = args[i + 1];
+                            switch (probType) {
+                                case "bin":
+                                    problemType = probType;
+                                    problem = new BinPacking(0);
+                                    break;
+                                case "sat":
+                                    problemType = probType;
+                                    problem = new SAT(0);
+                                    break;
+                                case "flo":
+                                    problemType = probType;
+                                    problem = new FlowShop(0);
+                                    break;
+                                case "per":
+                                    problemType = probType;
+                                    problem = new PersonnelScheduling(0);
+                                    break;
+                            }
                             try {
-                                ensembleNumber = Integer.parseInt(args[i + 1]);
+                                ensembleNumber = Integer.parseInt(args[i + 2]);
                             } catch (NumberFormatException e) {
                                 printUsage(false);
                                 System.exit(1);
