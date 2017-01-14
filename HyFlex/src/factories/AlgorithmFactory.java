@@ -41,21 +41,6 @@ public class AlgorithmFactory {
                 }
             }
         }
-
-//        for (int i = 0; i < NUMBER_OF_HEURISTICS; i++) {
-//            for (int j = 0; j < NUMBER_OF_HEURISTICS; j++) {
-//                for (int k = 0; k < NUMBER_OF_HEURISTICS; k++) {
-//                    heuristics = new int[3];
-//                    heuristics[0] = i;
-//                    heuristics[1] = j;
-//                    heuristics[2] = k;
-//
-//                    algorithm = new Algorithm(index, heuristics);
-//                    algorithms.add(algorithm);
-//                    index++;
-//                }
-//            }
-//        }
     }
 
     /* return algorithms */
@@ -119,7 +104,6 @@ public class AlgorithmFactory {
             }
         }
         Collections.sort(HEURISTICS_NUMBERS);
-       System.out.println(HEURISTICS_NUMBERS);
     }
 
 }

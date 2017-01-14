@@ -25,7 +25,6 @@ public class EnsembleFactory {
     /* return an ensemble comprised of elite algorithms */
     public static Ensemble generateEliteEnsemble() throws IOException {
         ArrayList<Algorithm> eliteAlgorithms = AlgorithmFactory.getEliteAlgorithms();
-
         return generate(eliteAlgorithms);
     }
 

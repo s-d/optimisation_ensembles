@@ -40,6 +40,7 @@ class RunDiverseHeuristics {
     public static void main(String args[]) throws IOException {
         type = "";
         flag = "";
+        problemType = "";
         ensemble = null;
         iterations = 50;
         ensembleNumber = 0;
@@ -76,6 +77,7 @@ class RunDiverseHeuristics {
         /* inform user that data collection is starting */
         String fullName = type.equals("-e") ? "ensemble" : "algorithm";
         System.out.printf("Starting %s data collection.\r\n", fullName);
+        System.out.println(problem.toString());
 
         /* write data headers to output file */
         String header = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
@@ -103,8 +105,6 @@ class RunDiverseHeuristics {
         HyperHeuristic hh;
         problemInstance = 0;
 
-        System.out.println(ensemble);
-
         /* for every problem instance */
         for (int i = 0; i < problem.getNumberOfInstances(); i++) {
             problemSeed = 1000;
@@ -115,16 +115,16 @@ class RunDiverseHeuristics {
             for (int j = 0; j < iterations; j++) {
                 /* initialize new problem and solver and run */
                 switch (problemType) {
-                    case "bin":
+                    case "--bin":
                         problem = new BinPacking(problemSeed);
                         break;
-                    case "sat":
+                    case "--sat":
                         problem = new SAT(problemSeed);
                         break;
-                    case "flo":
+                    case "--flo":
                         problem = new FlowShop(problemSeed);
                         break;
-                    case "per":
+                    case "--per":
                         problem = new PersonnelScheduling(problemSeed);
                         break;
                 }
@@ -147,8 +147,6 @@ class RunDiverseHeuristics {
     /* algorithm data collection */
     private static void collectAlgorithmData() {
         ArrayList<Algorithm> algorithms = AlgorithmFactory.getAlgorithms();
-        System.out.println(problem.toString());
-        System.out.println(algorithms.size());
         int iteratorBegin = (iteratorStart > -1) ? iteratorStart : 0;
         int iteratorFinish = (iteratorEnd > -1) ? iteratorEnd : algorithms.size();
         /* generate and test ensembles of single algorithms */
@@ -163,7 +161,7 @@ class RunDiverseHeuristics {
     /* creates data directory for output files */
     private static void createDataLocation() throws IOException {
         boolean result = false;
-        String testType = "ensemble";
+        String testType = problemType;
         String ensDirName = "Data/Ensembles";
         String algDirName = "Data/Algorithms";
         String eliDirName = "Data/EliteEnsembles";
@@ -174,20 +172,21 @@ class RunDiverseHeuristics {
             case "-e":
                 switch (flag) {
                     case "--elite":
-                        testType = "eliteEnsemble";
+                        testType += "EliteEnsemble";
                         dataDir = new File(eliDirName);
                         break;
                     case "--random":
-                        testType = "randomEnsemble";
+                        testType += "RandomEnsemble";
                         dataDir = new File(ranDirName);
                         break;
                     default:
+                        testType += "Ensemble";
                         dataDir = new File(ensDirName);
                         break;
                 }
                 break;
             case "-a":
-                testType = problemType + "Algorithm";
+                testType += "Algorithm";
                 dataDir = new File(algDirName);
                 break;
         }
@@ -217,31 +216,12 @@ class RunDiverseHeuristics {
                         System.exit(0);
                     case "-a":
                         type = arg;
-                        if (args.length < 3) {
+                        if (args.length < 2) {
                             printUsage(true);
                             System.exit(1);
                         } else {
-                            String probType = args[i + 1];
-                            switch (probType) {
-                                case "bin":
-                                    problemType = probType;
-                                    problem = new BinPacking(0);
-                                    break;
-                                case "sat":
-                                    problemType = probType;
-                                    problem = new SAT(0);
-                                    break;
-                                case "flo":
-                                    problemType = probType;
-                                    problem = new FlowShop(0);
-                                    break;
-                                case "per":
-                                    problemType = probType;
-                                    problem = new PersonnelScheduling(0);
-                                    break;
-                            }
                             try {
-                                iterations = Integer.parseInt(args[i + 2]);
+                                iterations = Integer.parseInt(args[i + 1]);
                             } catch (NumberFormatException e) {
                                 printUsage(false);
                                 System.exit(1);
@@ -255,31 +235,12 @@ class RunDiverseHeuristics {
                         break;
                     case "-e":
                         type = arg;
-                        if (args.length < 3) {
+                        if (args.length < 2) {
                             printUsage(true);
                             System.exit(1);
                         } else {
-                            String probType = args[i + 1];
-                            switch (probType) {
-                                case "bin":
-                                    problemType = probType;
-                                    problem = new BinPacking(0);
-                                    break;
-                                case "sat":
-                                    problemType = probType;
-                                    problem = new SAT(0);
-                                    break;
-                                case "flo":
-                                    problemType = probType;
-                                    problem = new FlowShop(0);
-                                    break;
-                                case "per":
-                                    problemType = probType;
-                                    problem = new PersonnelScheduling(0);
-                                    break;
-                            }
                             try {
-                                ensembleNumber = Integer.parseInt(args[i + 2]);
+                                ensembleNumber = Integer.parseInt(args[i + 1]);
                             } catch (NumberFormatException e) {
                                 printUsage(false);
                                 System.exit(1);
@@ -325,6 +286,22 @@ class RunDiverseHeuristics {
                     case "--random":
                         flag = arg;
                         break;
+                    case "--bin":
+                        problemType = arg;
+                        problem = new BinPacking(0);
+                        break;
+                    case "--sat":
+                        problemType = arg;
+                        problem = new SAT(0);
+                        break;
+                    case "--flo":
+                        problemType = arg;
+                        problem = new FlowShop(0);
+                        break;
+                    case "--per":
+                        problemType = arg;
+                        problem = new PersonnelScheduling(0);
+                        break;
                 }
             }
         } else {
@@ -332,6 +309,10 @@ class RunDiverseHeuristics {
             System.exit(1);
         }
         if (type.equals("")) {
+            printUsage(true);
+            System.exit(1);
+        }
+        if (problemType.equals("")){
             printUsage(true);
             System.exit(1);
         }
@@ -343,8 +324,12 @@ class RunDiverseHeuristics {
             System.out.println("Unexpected number of arguments.");
         }
         System.out.println("Usage:\r\n" +
-                "\tDiverseHeuristics -e <ensembleID> [--elite|--random]\r\n" +
-                "\tDiverseHeuristics -a <iterations>\r\n\r\n" +
+                "\tDiverseHeuristics <--bin|--sat|--flo|--per> -e <ensembleID>[--elite|--random]\r\n" +
+                "\tDiverseHeuristics <--bin|--sat|--flo|--per> -a <iterations>\r\n" +
+                "\t--bin:           Bin Packing problem\r\n" +
+                "\t--sat:           SAT Boolean problem\r\n" +
+                "\t--flo:           Flow Shop problem\r\n" +
+                "\t--per:           Personal Scheduling problem\r\n" +
                 "\t-e:              Test a single ensemble on all problems\r\n" +
                 "\t<ensembleID>:    The ID of the ensemble to be tested.\r\n" +
                 "\t--elite:         Test elite version of the ensemble.\r\n" +
