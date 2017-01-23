@@ -23,8 +23,8 @@ public class EnsembleFactory {
     }
 
     /* return an ensemble comprised of elite algorithms */
-    public static Ensemble generateEliteEnsemble() throws IOException {
-        ArrayList<Algorithm> eliteAlgorithms = AlgorithmFactory.getEliteAlgorithms();
+    public static Ensemble generateEliteEnsemble(String problemType) throws IOException {
+        ArrayList<Algorithm> eliteAlgorithms = AlgorithmFactory.getEliteAlgorithms(problemType);
         return generate(eliteAlgorithms);
     }
 

@@ -60,7 +60,7 @@ class RunDiverseHeuristics {
             for (int i = 0; i < ensembleNumber + 1; i++) {
                 switch (flag) {
                     case "--elite":
-                        ensemble = EnsembleFactory.generateEliteEnsemble();
+                        ensemble = EnsembleFactory.generateEliteEnsemble(problemType);
                         break;
                     case "--random":
                         ensemble = EnsembleFactory.generateRandomEnsemble();

@@ -63,23 +63,24 @@ public class AlgorithmFactory {
     }
 
     /* returns algorithms ordered by fitness */
-    static ArrayList<Algorithm> getEliteAlgorithms() throws IOException {
+    static ArrayList<Algorithm> getEliteAlgorithms(String problemType) throws IOException {
         if (algorithms == null) {
             generateAlgorithms();
         }
         if (eliteAlgorithms == null) {
             eliteAlgorithms = new ArrayList<>();
 
-            InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("eliteAlgorithmOrder.csv");
+            InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(problemType+".csv");
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(isr);
 
             int counter = 0;
-            int[] algOrder = new int[343];
+
+            ArrayList<Integer> algOrder = new ArrayList<>();
             String line;
 
             while ((line = br.readLine()) != null) {
-                algOrder[counter] = Integer.parseInt(line);
+                algOrder.add(Integer.parseInt(line));
                 counter++;
             }
 
