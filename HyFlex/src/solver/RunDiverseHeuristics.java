@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 class RunDiverseHeuristics {
 
@@ -139,6 +140,10 @@ class RunDiverseHeuristics {
                 /* increment seeds */
                 problemSeed++;
                 algorithmSeed++;
+
+                if (Objects.equals(flag, "--random")) {
+                    ensemble = EnsembleFactory.generateRandomEnsemble(1);
+                }
             }
             problemInstance++;
         }
@@ -312,7 +317,7 @@ class RunDiverseHeuristics {
             printUsage(true);
             System.exit(1);
         }
-        if (problemType.equals("")){
+        if (problemType.equals("")) {
             printUsage(true);
             System.exit(1);
         }

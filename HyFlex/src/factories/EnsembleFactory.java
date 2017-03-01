@@ -22,6 +22,11 @@ public class EnsembleFactory {
         return generate(randomAlgorithms);
     }
 
+    public static Ensemble generateRandomEnsemble(int index){
+        ArrayList<Algorithm> randomAlgorithms = AlgorithmFactory.getRandomAlgorithms();
+        return generate(randomAlgorithms, index);
+    }
+
     /* return an ensemble comprised of elite algorithms */
     public static Ensemble generateEliteEnsemble(String problemType) throws IOException {
         ArrayList<Algorithm> eliteAlgorithms = AlgorithmFactory.getEliteAlgorithms(problemType);
@@ -37,6 +42,16 @@ public class EnsembleFactory {
             }
         }
         index++;
+        return ensemble;
+    }
+
+    private static Ensemble generate(ArrayList<Algorithm> algorithms, int index) {
+        Ensemble ensemble = new Ensemble(index - 1);
+        for (int i = 0; i < index * 5; i++) {
+            if (i < algorithms.size()) {
+                ensemble.appendAlgorithm(algorithms.get(i));
+            }
+        }
         return ensemble;
     }
 
