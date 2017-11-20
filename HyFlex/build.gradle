@@ -1,0 +1,28 @@
+plugins{
+    id 'de.undercouch.download' version '3.3.0'
+}
+
+apply plugin: 'java'
+apply plugin: 'de.undercouch.download'
+
+import de.undercouch.gradle.tasks.download.Download
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group:'args4j', name: 'args4j', version: '2.0.25';
+    compile files('lib/chesc.jar');
+}
+
+version '1.0'
+
+task downloadJar(type: Download){
+    src 'http://www.asap.cs.nott.ac.uk/external/chesc2011/chesc.jar'
+    dest new File('./lib', 'chesc.jar')
+    overwrite true
+}
+
+compileJava.dependsOn downloadJar
+
