@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class EnsembleFactory {
 
-    private static int index = 1;
+    private static int index = 0;
 
     /* return an ensemble from ordered algorithms */
     public static Ensemble generateEnsemble() {
@@ -35,7 +35,7 @@ public class EnsembleFactory {
 
     /* base generation method */
     private static Ensemble generate(ArrayList<Algorithm> algorithms) {
-        Ensemble ensemble = new Ensemble(index -1);
+        Ensemble ensemble = new Ensemble(index);
         for (int i = 0; i < index * 5; i++) {
             if (i < algorithms.size()) {
                 ensemble.appendAlgorithm(algorithms.get(i));
@@ -46,7 +46,7 @@ public class EnsembleFactory {
     }
 
     private static Ensemble generate(ArrayList<Algorithm> algorithms, int index) {
-        Ensemble ensemble = new Ensemble(index -1);
+        Ensemble ensemble = new Ensemble(index);
         for (int i = 0; i < index * 5; i++) {
             if (i < algorithms.size()) {
                 ensemble.appendAlgorithm(algorithms.get(i));

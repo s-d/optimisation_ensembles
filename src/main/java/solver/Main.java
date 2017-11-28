@@ -83,7 +83,7 @@ class Main {
         if (!exp.equals(ArgParser.Experiments.ALG)) {
             headerToken = "algorithms";
 
-            for (int i = 0; i < ensembleNumber + 1; i++) {
+            for (int i = 0; i <= ensembleNumber; i++) {
                 switch (exp) {
                     case ELT:
                         ensemble = EnsembleFactory.generateEliteEnsemble(expParams
