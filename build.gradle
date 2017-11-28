@@ -12,17 +12,27 @@ repositories {
 }
 
 dependencies {
-    compile group:'args4j', name: 'args4j', version: '2.0.25';
-    compile files('lib/chesc.jar');
+    compile group:'args4j', name: 'args4j', version: '2.0.25'
+    compile fileTree(dir: 'lib', include: '*.jar')
 }
 
 version '1.0'
 
-task downloadJar(type: Download){
+task download_chesc(type: Download){
     src 'http://www.asap.cs.nott.ac.uk/external/chesc2011/chesc.jar'
     dest new File('./lib', 'chesc.jar')
-    overwrite true
+    overwrite false
 }
 
-compileJava.dependsOn downloadJar
+jar{
+    manifest {
+        attributes(
+        'Main-Class': 'solver.Main')
+    }
+     from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+compileJava.dependsOn download_chesc
 

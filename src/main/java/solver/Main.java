@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-class RunDiverseHeuristics {
+class Main {
 
     private static int iterations;
     private static int ensembleNumber;
@@ -129,7 +129,7 @@ class RunDiverseHeuristics {
                         problem = new PersonnelScheduling(problemSeed);
                         break;
                 }
-                hh = new ExecuteHyperHeuristic(ensemble, algorithmSeed, problemSeed, problemInstance, j, type, flag);
+                hh = new Experimenter(ensemble, algorithmSeed, problemSeed, problemInstance, j, type, flag);
 
                 problem.loadInstance(problemInstance);
 

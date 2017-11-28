@@ -5,7 +5,7 @@ import AbstractClasses.ProblemDomain;
 import heuristics.Algorithm;
 import heuristics.Ensemble;
 
-class ExecuteHyperHeuristic extends HyperHeuristic {
+class Experimenter extends HyperHeuristic {
 
     private int iteration;
     private int problemInstance;
@@ -16,8 +16,8 @@ class ExecuteHyperHeuristic extends HyperHeuristic {
     private String type = "Ensemble";
 
     /* constructor */
-    ExecuteHyperHeuristic(Ensemble ensemble, long algorithmSeed, long problemSeed,
-                          int problemInstance, int iteration, String type, String flag) {
+    Experimenter(Ensemble ensemble, long algorithmSeed, long problemSeed,
+                 int problemInstance, int iteration, String type, String flag) {
         super(algorithmSeed);
         this.ensemble = ensemble;
         this.algorithmSeed = algorithmSeed;
@@ -89,7 +89,7 @@ class ExecuteHyperHeuristic extends HyperHeuristic {
                         iteration, problemInstance, problemSeed, algorithmSeed,
                         startingFitness, ensemble.getID(), bestFitness, runs, heu);
                 try {
-                    RunDiverseHeuristics.writeData(output);
+                    Main.writeData(output);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
