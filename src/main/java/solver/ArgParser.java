@@ -48,10 +48,10 @@ class ArgParser {
                 .type(Integer.class)
                 .help("number of experiment executions");
 
-//        argParser.addArgument("-i", "--index")
-//                .type(Integer.class)
-//                .help("starting ensemble ID")
-//                .setDefault(0);
+        argParser.addArgument("-i", "--index")
+                .type(Integer.class)
+                .help("starting ensemble ID")
+                .setDefault(0);
 
         return argParser;
     }
@@ -73,7 +73,11 @@ class ArgParser {
             System.out.println("iterations must be a positive integer. ");
             argParser.printUsage();
             System.exit(1);
-
+        }
+        if((int) argResults.getAttrs().get("index") < 0){
+            System.out.println("index must be a positive integer. ");
+            argParser.printUsage();
+            System.exit(1);
         }
     }
 }

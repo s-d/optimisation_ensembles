@@ -25,8 +25,6 @@ class Experimenter extends HyperHeuristic {
         this.problemInstance = problemInstance;
         this.iteration = iteration;
 
-        System.out.println(type);
-
         if (type.equals("alg")) {
             algorithmData = true;
             this.type = "Algorithm";

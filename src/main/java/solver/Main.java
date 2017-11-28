@@ -45,7 +45,6 @@ class Main {
 
         expParams = ArgParser.parseArgs(args);
         setParams();
-        AlgorithmFactory.setProblemHeuristics(problem);
 
         if (expParams.get("experiment").equals(ArgParser.Experiments.ALG)) {
             collectAlgorithmData();
@@ -59,12 +58,32 @@ class Main {
 
     private static void setParams() throws IOException {
         String headerToken;
+        ensembleNumber = (int) expParams.get("index");
         iterations = (int) expParams.get("iterations");
+        ArgParser.Problems prob = (ArgParser.Problems) expParams.get("problem");
         ArgParser.Experiments exp = (ArgParser.Experiments) expParams.get("experiment");
+
+        switch (prob) {
+            case BIN:
+                problemType = prob.name().toLowerCase();
+                problem = new BinPacking(0);
+                break;
+            case FLO:
+                problemType = prob.name().toLowerCase();
+                problem = new FlowShop(0);
+                break;
+            case SAT:
+                problemType = prob.name().toLowerCase();
+                problem = new SAT(0);
+                break;
+        }
+
+        AlgorithmFactory.setProblemHeuristics(problem);
+
         if (!exp.equals(ArgParser.Experiments.ALG)) {
             headerToken = "algorithms";
 
-            for (int i = 0; i < ensembleNumber; i++) {
+            for (int i = 0; i < ensembleNumber + 1; i++) {
                 switch (exp) {
                     case ELT:
                         ensemble = EnsembleFactory.generateEliteEnsemble(expParams
@@ -90,21 +109,6 @@ class Main {
             expType = exp.name().toLowerCase();
         }
 
-        ArgParser.Problems prob = (ArgParser.Problems) expParams.get("problem");
-        switch (prob) {
-            case BIN:
-                problemType = prob.name().toLowerCase();
-                problem = new BinPacking(0);
-                break;
-            case FLO:
-                problemType = prob.name().toLowerCase();
-                problem = new FlowShop(0);
-                break;
-            case SAT:
-                problemType = prob.name().toLowerCase();
-                problem = new SAT(0);
-                break;
-        }
 
         createDataLocation();
 
