@@ -12,13 +12,13 @@ repositories {
 }
 
 dependencies {
-    compile group:'args4j', name: 'args4j', version: '2.0.25'
+    compile 'net.sourceforge.argparse4j:argparse4j:0.8.1'
     compile fileTree(dir: 'lib', include: '*.jar')
 }
 
 version '1.0'
 
-task download_chesc(type: Download){
+task downloadLib(type: Download){
     src 'http://www.asap.cs.nott.ac.uk/external/chesc2011/chesc.jar'
     dest new File('./lib', 'chesc.jar')
     overwrite false
@@ -34,5 +34,5 @@ jar{
     }
 }
 
-compileJava.dependsOn download_chesc
+compileJava.dependsOn downloadLib
 
