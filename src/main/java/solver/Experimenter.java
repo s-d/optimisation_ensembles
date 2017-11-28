@@ -17,7 +17,7 @@ class Experimenter extends HyperHeuristic {
 
     /* constructor */
     Experimenter(Ensemble ensemble, long algorithmSeed, long problemSeed,
-                 int problemInstance, int iteration, String type, String flag) {
+                 int problemInstance, int iteration, String type) {
         super(algorithmSeed);
         this.ensemble = ensemble;
         this.algorithmSeed = algorithmSeed;
@@ -25,12 +25,14 @@ class Experimenter extends HyperHeuristic {
         this.problemInstance = problemInstance;
         this.iteration = iteration;
 
-        if (type.equals("-a")) {
+        System.out.println(type);
+
+        if (type.equals("alg")) {
             algorithmData = true;
             this.type = "Algorithm";
-        } else if (flag.equals("--elite")) {
+        } else if (type.equals("eli")) {
             this.type = "Elite ensemble";
-        } else if (flag.equals("--random")) {
+        } else if (type.equals("ran")) {
             this.type = "Random ensemble";
         }
 

@@ -15,32 +15,26 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.Map;
 
 class Main {
 
     private static int iterations;
     private static int ensembleNumber;
     private static int problemInstance;
-    private static String type;
-    private static String flag;
+    private static String expType;
     private static FileWriter fw;
     private static Ensemble ensemble;
     private static ProblemDomain problem;
     private static String problemType;
     private static int iteratorStart;
     private static int iteratorEnd;
+    private static Map expParams;
 
 
     /* writes data to output file */
-    static synchronized void writeData(String string) throws IOException {
-        fw.write(string);
-        fw.flush();
-    }
-
     public static void main(String args[]) throws IOException {
-        type = "";
-        flag = "";
+        expType = "";
         problemType = "";
         ensemble = null;
         iterations = 50;
@@ -48,35 +42,73 @@ class Main {
         problemInstance = 0;
         iteratorStart = -1;
         iteratorEnd = -1;
-        String headerToken = "heuristics";
 
-        parseArguments(args);
+        expParams = ArgParser.parseArgs(args);
+        setParams();
         AlgorithmFactory.setProblemHeuristics(problem);
 
-        /* if not testing algorithms */
-        if (!type.equals("-a")) {
+        if (expParams.get("experiment").equals(ArgParser.Experiments.ALG)) {
+            collectAlgorithmData();
+        } else {
+            collectExperimentData(ensemble);
+        }
+
+        /* close file writer */
+        fw.close();
+    }
+
+    private static void setParams() throws IOException {
+        String headerToken;
+        iterations = (int) expParams.get("iterations");
+        ArgParser.Experiments exp = (ArgParser.Experiments) expParams.get("experiment");
+        if (!exp.equals(ArgParser.Experiments.ALG)) {
             headerToken = "algorithms";
 
-            /* generate appropriate ensemble */
-            for (int i = 0; i < ensembleNumber + 1; i++) {
-                switch (flag) {
-                    case "--elite":
-                        ensemble = EnsembleFactory.generateEliteEnsemble(problemType);
+            for (int i = 0; i < ensembleNumber; i++) {
+                switch (exp) {
+                    case ELT:
+                        ensemble = EnsembleFactory.generateEliteEnsemble(expParams
+                                .get("problem").toString().toLowerCase());
+                        expType = exp.name().toLowerCase();
                         break;
-                    case "--random":
+                    case RAN:
                         ensemble = EnsembleFactory.generateRandomEnsemble();
+                        expType = exp.name().toLowerCase();
+                        break;
+                    case ENS:
+                        ensemble = EnsembleFactory.generateEnsemble();
+                        expType = exp.name().toLowerCase();
                         break;
                     default:
-                        ensemble = EnsembleFactory.generateEnsemble();
-                        break;
+                        System.out.println("Unexpected error in ensemble generation.");
+                        System.exit(1);
                 }
             }
+
+        } else {
+            headerToken = "heuristics";
+            expType = exp.name().toLowerCase();
+        }
+
+        ArgParser.Problems prob = (ArgParser.Problems) expParams.get("problem");
+        switch (prob) {
+            case BIN:
+                problemType = prob.name().toLowerCase();
+                problem = new BinPacking(0);
+                break;
+            case FLO:
+                problemType = prob.name().toLowerCase();
+                problem = new FlowShop(0);
+                break;
+            case SAT:
+                problemType = prob.name().toLowerCase();
+                problem = new SAT(0);
+                break;
         }
 
         createDataLocation();
 
-        /* inform user that data collection is starting */
-        String fullName = type.equals("-e") ? "ensemble" : "algorithm";
+        String fullName = expParams.get("experiment").toString().toLowerCase();
         System.out.printf("Starting %s data collection.\r\n", fullName);
         System.out.println(problem.toString());
 
@@ -87,19 +119,10 @@ class Main {
 
         writeData(header);
 
-        /* begin testing */
-        if (type.equals("-a")) {
-            collectAlgorithmData();
-        } else {
-            collectEnsembleData(ensemble);
-        }
-
-        /* close file writer */
-        fw.close();
     }
 
     /* data collection for ensembles */
-    private static void collectEnsembleData(Ensemble ensemble) {
+    private static void collectExperimentData(Ensemble ensemble) {
         int problemSeed;
         int algorithmSeed;
         long timeLimit;
@@ -116,20 +139,20 @@ class Main {
             for (int j = 0; j < iterations; j++) {
                 /* initialize new problem and solver and run */
                 switch (problemType) {
-                    case "--bin":
+                    case "bin":
                         problem = new BinPacking(problemSeed);
                         break;
-                    case "--sat":
+                    case "sat":
                         problem = new SAT(problemSeed);
                         break;
-                    case "--flo":
+                    case "flo":
                         problem = new FlowShop(problemSeed);
                         break;
-                    case "--per":
+                    case "per":
                         problem = new PersonnelScheduling(problemSeed);
                         break;
                 }
-                hh = new Experimenter(ensemble, algorithmSeed, problemSeed, problemInstance, j, type, flag);
+                hh = new Experimenter(ensemble, algorithmSeed, problemSeed, problemInstance, j, expType);
 
                 problem.loadInstance(problemInstance);
 
@@ -141,7 +164,7 @@ class Main {
                 problemSeed++;
                 algorithmSeed++;
 
-                if (Objects.equals(flag, "--random")) {
+                if (expParams.get("experiment").equals(ArgParser.Experiments.RAN)) {
                     ensemble = EnsembleFactory.generateRandomEnsemble(1);
                 }
             }
@@ -159,190 +182,54 @@ class Main {
             ensemble = new Ensemble(i);
             ensemble.appendAlgorithm(algorithms.get(i));
 
-            collectEnsembleData(ensemble);
+            collectExperimentData(ensemble);
         }
     }
 
-    /* creates data directory for output files */
     private static void createDataLocation() throws IOException {
         boolean result = false;
-        String testType = problemType;
-        String ensDirName = "Data/Ensembles";
-        String algDirName = "Data/Algorithms";
-        String eliDirName = "Data/EliteEnsembles";
-        String ranDirName = "Data/RandomEnsembles";
+        String testType = expParams.get("problem").toString().toLowerCase();
+        String parentDir = "data";
+        String ensDirName = parentDir + "/ensembles";
+        String algDirName = parentDir + "/algorithms";
+        String eliDirName = parentDir + "/eliteEnsembles";
+        String ranDirName = parentDir + "/randomEnsembles";
         File dataDir = null;
 
-        switch (type) {
-            case "-e":
-                switch (flag) {
-                    case "--elite":
-                        testType += "EliteEnsemble";
-                        dataDir = new File(eliDirName);
-                        break;
-                    case "--random":
-                        testType += "RandomEnsemble";
-                        dataDir = new File(ranDirName);
-                        break;
-                    default:
-                        testType += "Ensemble";
-                        dataDir = new File(ensDirName);
-                        break;
-                }
+        switch ((ArgParser.Experiments) expParams.get("experiment")) {
+            case ENS:
+                testType += "Ensemble";
+                dataDir = new File(ensDirName);
                 break;
-            case "-a":
+            case ELT:
+                testType += "EliteEnsemble";
+                dataDir = new File(eliDirName);
+                break;
+            case RAN:
+                testType += "RandomEnsemble";
+                dataDir = new File(ranDirName);
+                break;
+            case ALG:
                 testType += "Algorithm";
                 dataDir = new File(algDirName);
                 break;
         }
-
-        assert dataDir != null;
         if (!dataDir.exists()) {
             result = dataDir.mkdirs();
         }
         if (result) {
             System.out.printf("%s data directory created.\n", dataDir.getName());
         }
-        int fileNum = (!type.equals("-a") ? ensemble.getID() : iterations);
-        String FILE_PATH = String.format("%s/%s%dData%d.csv",
+        int fileNum = (!expParams.get("experiment").equals(ArgParser.Experiments.ALG)
+                ? ensemble.getID() : iterations);
+        String FILE_PATH = String.format("%s/%s%ddata%d.csv",
                 dataDir.getPath(), testType, fileNum, System.nanoTime());
         fw = new FileWriter(FILE_PATH, true);
     }
 
-    /* determine test from commandline arguments */
-    private static void parseArguments(String[] args) throws IOException {
-        if (args.length > 0) {
-            for (int i = 0; i < args.length; i++) {
-                String arg = args[i];
-                switch (arg) {
-                    case "-h":
-                    case "--help":
-                        printUsage(false);
-                        System.exit(0);
-                    case "-a":
-                        type = arg;
-                        if (args.length < 2) {
-                            printUsage(true);
-                            System.exit(1);
-                        } else {
-                            try {
-                                iterations = Integer.parseInt(args[i + 1]);
-                            } catch (NumberFormatException e) {
-                                printUsage(false);
-                                System.exit(1);
-                            }
-                            if (iterations < 1) {
-                                System.out.println("<iterations> must be greater than one.");
-                                printUsage(false);
-                                System.exit(1);
-                            }
-                        }
-                        break;
-                    case "-e":
-                        type = arg;
-                        if (args.length < 2) {
-                            printUsage(true);
-                            System.exit(1);
-                        } else {
-                            try {
-                                ensembleNumber = Integer.parseInt(args[i + 1]);
-                            } catch (NumberFormatException e) {
-                                printUsage(false);
-                                System.exit(1);
-                            }
-                            if (ensembleNumber < 0) {
-                                System.out.println("ensembleNo must be positive.");
-                                printUsage(false);
-                                System.exit(1);
-                            }
-                        }
-                        break;
-
-                    case "--start":
-                        try {
-                            iteratorStart = Integer.parseInt(args[i + 1]);
-                        } catch (NumberFormatException e) {
-                            printUsage(false);
-                            System.exit(1);
-                        }
-                        if (iteratorStart < 0) {
-                            System.out.println("ensembleNo must be positive.");
-                            printUsage(false);
-                            System.exit(1);
-                        }
-                        break;
-
-                    case "--end":
-                        try {
-                            iteratorEnd = Integer.parseInt(args[i + 1]);
-                        } catch (NumberFormatException e) {
-                            printUsage(false);
-                            System.exit(1);
-                        }
-                        if (iteratorEnd < 0) {
-                            System.out.println("ensembleNo must be positive.");
-                            printUsage(false);
-                            System.exit(1);
-                        }
-                        break;
-                    case "--elite":
-                        flag = arg;
-                        break;
-                    case "--random":
-                        flag = arg;
-                        break;
-                    case "--bin":
-                        problemType = arg;
-                        problem = new BinPacking(0);
-                        break;
-                    case "--sat":
-                        problemType = arg;
-                        problem = new SAT(0);
-                        break;
-                    case "--flo":
-                        problemType = arg;
-                        problem = new FlowShop(0);
-                        break;
-                    case "--per":
-                        problemType = arg;
-                        problem = new PersonnelScheduling(0);
-                        break;
-                }
-            }
-        } else {
-            printUsage(true);
-            System.exit(1);
-        }
-        if (type.equals("")) {
-            printUsage(true);
-            System.exit(1);
-        }
-        if (problemType.equals("")) {
-            printUsage(true);
-            System.exit(1);
-        }
-    }
-
-    /* outputs program usage to command line */
-    private static void printUsage(boolean number) {
-        if (number) {
-            System.out.println("Unexpected number of arguments.");
-        }
-        System.out.println("Usage:\r\n" +
-                "\tDiverseHeuristics <--bin|--sat|--flo|--per> -e <ensembleID>[--elite|--random]\r\n" +
-                "\tDiverseHeuristics <--bin|--sat|--flo|--per> -a <iterations>\r\n" +
-                "\t--bin:           Bin Packing problem\r\n" +
-                "\t--sat:           SAT Boolean problem\r\n" +
-                "\t--flo:           Flow Shop problem\r\n" +
-                "\t--per:           Personal Scheduling problem\r\n" +
-                "\t-e:              Test a single ensemble on all problems\r\n" +
-                "\t<ensembleID>:    The ID of the ensemble to be tested.\r\n" +
-                "\t--elite:         Test elite version of the ensemble.\r\n" +
-                "\t--random:        Test a randomly generated ensemble.\r\n\r\n" +
-                "\t-a:              Test all algorithms on all problems.\r\n" +
-                "\t<iterations>:    The number of times to test each algorithm.");
-
-        // Bin SAT Flo Per
+    static synchronized void writeData(String string) throws IOException {
+        fw.write(string);
+        fw.flush();
     }
 
 }
