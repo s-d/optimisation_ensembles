@@ -74,7 +74,7 @@ class ArgParser {
             argParser.printUsage();
             System.exit(1);
         }
-        if((int) argResults.getAttrs().get("index") < 0){
+        if ((int) argResults.getAttrs().get("index") < 0) {
             System.out.println("index must be a positive integer. ");
             argParser.printUsage();
             System.exit(1);

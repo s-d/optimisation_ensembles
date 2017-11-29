@@ -14,7 +14,10 @@ repositories {
 dependencies {
     compile 'net.sourceforge.argparse4j:argparse4j:0.8.1'
     compile fileTree(dir: 'lib', include: '*.jar')
+    testCompile 'com.github.stefanbirkner:system-rules:1.16.0'
+    testCompile 'junit:junit:+'
 }
+
 
 version '1.2'
 
@@ -36,7 +39,7 @@ task downloadLib(type: Download){
 
 compileJava.dependsOn downloadLib
 
-task cleanAll(type: Delete){
+task cleanAll(type: Delete, dependsOn: clean){
     delete "lib"
     delete "data"
 }
